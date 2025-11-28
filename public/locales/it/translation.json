@@ -1,0 +1,113 @@
+{
+  "welcome": "Ciao Mondo!",
+  "langs": {
+    "en": {
+      "name": "Inglese"
+    },
+    "it": {
+      "name": "Italiano"
+    },
+    "list": ["en", "it"]
+  },
+  "configuration": {
+    "title": "Parametri",
+  "realEstateAgency": {
+    "label": "Agenzia (%)",
+    "placeholder": "Inserisci percentuale"
+  },
+  "mortgage": {
+    "label": "Mutuo (%)",
+    "placeholder": "Inserisci percentuale"
+  },
+  "notary": {
+    "label": "Notaio",
+    "placeholder": "Inserisci nome notaio"
+  },
+  "bankRate": {
+    "label": "Tasso Banca",
+    "placeholder": "Inserisci tasso"
+  },
+  "monthlyRate": {
+    "label": "Tasso Mensile",
+    "placeholder": "Inserisci tasso mensile"
+  },
+  "mortgageDuration": {
+    "label": "Durata Mutuo (Anni)",
+    "placeholder": "Inserisci durata in anni"
+  },
+  "numberOfInstallments": {
+    "label": "Numero Rate",
+    "placeholder": "Inserisci numero di rate"
+  },
+  "extra": {
+    "label": "Extra",
+    "placeholder": "Inserisci dettagli extra"
+  },
+  "broker": {
+    "label": "Broker (%)",
+    "placeholder": "Inserisci percentuale del broker"
+  },
+  "underwriting": {
+    "label": "Istruttoria (%)",
+    "placeholder": "Inserisci percentuale di istruttoria"
+  },
+  "appraisal": {
+    "label": "Perizia",
+    "placeholder": "Inserisci dettagli perizia"
+  },
+  "substituteTax": {
+    "label": "Imposta Sostitutiva (%)",
+    "placeholder": "Inserisci percentuale"
+  },
+  "fireAndExplosion": {
+    "label": "Incendio+Scoppio",
+    "placeholder": "Inserisci copertura"
+  },
+  "tcmPolicy": {
+    "label": "Polizza TCM",
+    "placeholder": "Inserisci dettagli polizza"
+  }
+},
+  "budget": {
+    "title": "Budget",
+    "homePrice": {
+      "label": "Costo Casa",
+      "placeholder": "Inserisci costo casa"
+    }
+  },
+  "estimate": {
+    "title": "Stime",
+    "agency": {
+      "label": "Agenzia + IVA",
+      "placeholder": ""
+    },
+    "mortageDeposit": {
+      "label": "Anticipo Mutuo",
+      "placeholder": ""
+    },
+    "bankAssessment": {
+      "label": "Istruttoria Banca",
+      "placeholder": ""
+    },
+    "substituteTax": {
+      "label": "Imposta Sostitutiva",
+      "placeholder": ""
+    },
+    "broker": {
+      "label": "Broker",
+      "placeholder": ""
+    },
+    "notary": {
+      "label": "Notaio",
+      "placeholder": ""
+    },
+    "initialInvestment": {
+      "label": "Investimento Iniziale",
+      "placeholder": ""
+    },
+    "mortagePayment": {
+      "label": "Rata Mutuo",
+      "placeholder": ""
+    }
+  }
+}

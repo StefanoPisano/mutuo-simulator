@@ -1,0 +1,116 @@
+{
+  "welcome": "Hello World!",
+  "langs": {
+    "en": {
+      "name": "English"
+    },
+    "it": {
+      "name": "Italian"
+    },
+    "list": [
+      "en",
+      "it"
+    ]
+  },
+  "configuration": {
+    "title": "Configuration Parameters",
+    "realEstateAgency": {
+      "label": "Agency (%)",
+      "placeholder": "Enter percentage"
+    },
+    "mortgage": {
+      "label": "Mortgage (%)",
+      "placeholder": "Enter percentage"
+    },
+    "notary": {
+      "label": "Notary",
+      "placeholder": "Enter notary name"
+    },
+    "bankRate": {
+      "label": "Bank Rate",
+      "placeholder": "Enter rate"
+    },
+    "monthlyRate": {
+      "label": "Monthly Rate",
+      "placeholder": "Enter monthly rate"
+    },
+    "mortgageDuration": {
+      "label": "Mortgage Duration (Years)",
+      "placeholder": "Enter duration in years"
+    },
+    "numberOfInstallments": {
+      "label": "Number of Installments",
+      "placeholder": "Enter number of installments"
+    },
+    "extra": {
+      "label": "Extra",
+      "placeholder": "Enter extra details"
+    },
+    "broker": {
+      "label": "Broker (%)",
+      "placeholder": "Enter broker percentage"
+    },
+    "underwriting": {
+      "label": "Underwriting (%)",
+      "placeholder": "Enter underwriting percentage"
+    },
+    "appraisal": {
+      "label": "Appraisal",
+      "placeholder": "Enter appraisal details"
+    },
+    "substituteTax": {
+      "label": "Substitute Tax (%)",
+      "placeholder": "Enter percentage"
+    },
+    "fireAndExplosion": {
+      "label": "Fire+Explosion",
+      "placeholder": "Enter coverage"
+    },
+    "tcmPolicy": {
+      "label": "TCM Policy",
+      "placeholder": "Enter policy details"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "homePrice": {
+      "label": "Home Price",
+      "placeholder": "Target home price"
+    }
+  },
+  "estimate": {
+    "title": "Estimates",
+    "agency": {
+      "label": "Real Estate + IVA",
+      "placeholder": ""
+    },
+    "mortageDeposit": {
+      "label": "Mortage Deposit",
+      "placeholder": ""
+    },
+    "bankAssessment": {
+      "label": "Bank Assessment",
+      "placeholder": ""
+    },
+    "substituteTax": {
+      "label": "Substitute Tax",
+      "placeholder": ""
+    },
+    "broker": {
+      "label": "Broker",
+      "placeholder": ""
+    },
+    "notary": {
+      "label": "Notary",
+      "placeholder": ""
+    },
+    "initialInvestment": {
+      "label": "Initial Investment",
+      "placeholder": ""
+    },
+    "mortagePayment": {
+      "label": "Mortage Payment",
+      "placeholder": ""
+    }
+  }
+}
