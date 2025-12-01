@@ -4,26 +4,36 @@ import styles from "./dashboard.module.scss";
 import Card from "@Components/UI/Card.tsx";
 import Input from "@Components/UI/Input.tsx";
 import {useTranslation} from "react-i18next";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const Dashboard: React.FC = () => {
     const { t } = useTranslation();
 
     const [bankRate, setBankRate] = useState("2.98");
+    const [monthlyRate, setMonthlyRate] = useState("");
+    const [numberOfInstallments, setNumberOfInstallments] = useState("");
+    const [mortageDuration, setMortageDuration] = useState("30")
+
+
     const handleBankRateChange = (bankRate:string) => {
         setBankRate(bankRate);
-
-        const rate = calculateMonthlyRate(parseFloat(bankRate))
-        setMonthlyRate(rate.toString());
     }
 
-    const [mortageDuration, setMortageDuration] = useState("30")
     const handleMortageDurationChange = (duration:string) => {
         setMortageDuration(duration);
-
-        const numberOfInstallments = calculateMortageInstallments(parseInt(duration))
-        setNumberOfInstallments(numberOfInstallments.toString());
     }
+
+    useEffect(() => {
+        const rate = calculateMonthlyRate(parseFloat(bankRate));
+
+        setMonthlyRate(rate.toString())
+    }, [bankRate]);
+
+    useEffect(() => {
+        const numberOfInstallments = calculateMortageInstallments(parseInt(mortageDuration))
+        setNumberOfInstallments(numberOfInstallments.toString());
+    }, [mortageDuration])
+
 
     const calculateMortageInstallments = (duration:number) => {
         return duration ? (duration * 12).toFixed(0) : "Invalid Mortage Duration";
@@ -32,9 +42,6 @@ const Dashboard: React.FC = () => {
     const calculateMonthlyRate = (bankRate:number) => {
         return bankRate ? bankRate / 100 / 12 : "Invalid Bank Rate"
     }
-
-    const [monthlyRate, setMonthlyRate] = useState(calculateMonthlyRate(parseFloat(bankRate)) + "");
-    const [numberOfInstallments, setNumberOfInstallments] = useState(calculateMortageInstallments(parseInt(mortageDuration)) + "");
 
     return (
         <>
