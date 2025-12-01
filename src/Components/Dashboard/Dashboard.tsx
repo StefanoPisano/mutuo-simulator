@@ -9,11 +9,17 @@ import {useEffect, useState} from "react";
 const Dashboard: React.FC = () => {
     const { t } = useTranslation();
 
+    const [agencyRate, setAgencyRate] = useState("4");
     const [bankRate, setBankRate] = useState("2.98");
     const [monthlyRate, setMonthlyRate] = useState("");
     const [numberOfInstallments, setNumberOfInstallments] = useState("");
     const [mortageDuration, setMortageDuration] = useState("30")
+    const [budget, setBudget] = useState("")
+    const [agency, setAgency] = useState("- €")
 
+    const handleAgencyRateChange = (agencyRate:string) => {
+        setAgencyRate(agencyRate);
+    }
 
     const handleBankRateChange = (bankRate:string) => {
         setBankRate(bankRate);
@@ -21,6 +27,10 @@ const Dashboard: React.FC = () => {
 
     const handleMortageDurationChange = (duration:string) => {
         setMortageDuration(duration);
+    }
+
+    const handleBudgetChange = (budget:string) => {
+        setBudget(budget);
     }
 
     useEffect(() => {
@@ -43,6 +53,22 @@ const Dashboard: React.FC = () => {
         return bankRate ? bankRate / 100 / 12 : "Invalid Bank Rate"
     }
 
+
+    useEffect(() => {
+        const agencyCheck = agencyRate && !isNaN(parseFloat(agencyRate));
+        const budgetCheck =  budget && !isNaN(parseFloat(budget))
+
+        if(agencyCheck && budgetCheck) {
+            const agencyAmountWithoutIVA = parseFloat(agencyRate) * parseFloat(budget) / 100;
+            const iva = 0.22 * agencyAmountWithoutIVA;
+
+            setAgency((agencyAmountWithoutIVA + iva) + " €")
+        } else {
+            setAgency("- €")
+        }
+
+    }, [mortageDuration, budget, bankRate, agencyRate])
+
     return (
         <>
             <div className={"w-full h-full flex flex-row gap-10"}>
@@ -52,7 +78,7 @@ const Dashboard: React.FC = () => {
                 <div className={"p-8 basis-full border-french-gray rounded-2xl border " + styles.bgDashboard}>
                     <Card  title={t("configuration.title")}>
                         <div className={"flex gap-2"}>
-                            <Input label={t("configuration.realEstateAgency.label")} placeholder={t("configuration.realEstateAgency.placeholder")} inputType={"text"} value={"4"} disabled={false}/>
+                            <Input label={t("configuration.realEstateAgency.label")} placeholder={t("configuration.realEstateAgency.placeholder")} inputType={"text"} value={agencyRate} disabled={false} onChange={handleAgencyRateChange}/>
                         </div>
                         <div className={"flex gap-2"}>
                             <Input label={t("configuration.mortgage.label")} placeholder={t("configuration.mortgage.placeholder")} inputType={"text"} value={"80"} disabled={false}/>
@@ -76,13 +102,13 @@ const Dashboard: React.FC = () => {
                     </Card>
                     <Card  title={t("budget.title")}>
                         <div className={"flex gap-2"}>
-                            <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")} inputType={"text"}/>
+                            <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")} inputType={"text"} value={budget} onChange={handleBudgetChange}/>
                         </div>
                     </Card>
 
                     <Card  title={t("estimate.title")}>
                         <div className={"flex gap-2"}>
-                            <Input label={t("estimate.agency.label")} placeholder={t("estimate.agency.placeholder")} inputType={"text"} disabled={true}/>
+                            <Input label={t("estimate.agency.label")} placeholder={t("estimate.agency.placeholder")} inputType={"text"} value={agency} disabled={true}/>
                             <Input label={t("estimate.mortageDeposit.label")} placeholder={t("estimate.mortageDeposit.placeholder")} inputType={"text"} disabled={true}/>
                             <Input label={t("estimate.bankAssessment.label")} placeholder={t("estimate.bankAssessment.placeholder")} inputType={"text"} disabled={true}/>
                             <Input label={t("estimate.substituteTax.label")} placeholder={t("estimate.substituteTax.placeholder")} inputType={"text"} disabled={true}/>
