@@ -13,7 +13,6 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({label, placeholder, inputType, disabled = false, value, onChange}) => {
 
     const change = (event: ChangeEvent<HTMLInputElement>) => {
-        debugger;
         if(onChange) {
             onChange(event.target.value);
         }

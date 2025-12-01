@@ -50,9 +50,9 @@
       "label": "Broker (%)",
       "placeholder": "Enter broker percentage"
     },
-    "underwriting": {
-      "label": "Underwriting (%)",
-      "placeholder": "Enter underwriting percentage"
+    "bankAssessment": {
+      "label": "Bank AssessMent (%)",
+      "placeholder": "Enter bank assessment percentage"
     },
     "appraisal": {
       "label": "Appraisal",
@@ -84,8 +84,8 @@
       "label": "Real Estate + IVA",
       "placeholder": ""
     },
-    "mortageDeposit": {
-      "label": "Mortage Deposit",
+    "mortgageDeposit": {
+      "label": "Mortgage Deposit",
       "placeholder": ""
     },
     "bankAssessment": {
@@ -108,8 +108,8 @@
       "label": "Initial Investment",
       "placeholder": ""
     },
-    "mortagePayment": {
-      "label": "Mortage Payment",
+    "mortgagePayment": {
+      "label": "Mortgage Payment",
       "placeholder": ""
     }
   }

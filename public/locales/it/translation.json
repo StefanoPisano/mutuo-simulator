@@ -47,7 +47,7 @@
     "label": "Broker (%)",
     "placeholder": "Inserisci percentuale del broker"
   },
-  "underwriting": {
+  "bankAssessment": {
     "label": "Istruttoria (%)",
     "placeholder": "Inserisci percentuale di istruttoria"
   },
@@ -81,7 +81,7 @@
       "label": "Agenzia + IVA",
       "placeholder": ""
     },
-    "mortageDeposit": {
+    "mortgageDeposit": {
       "label": "Anticipo Mutuo",
       "placeholder": ""
     },
@@ -105,7 +105,7 @@
       "label": "Investimento Iniziale",
       "placeholder": ""
     },
-    "mortagePayment": {
+    "mortgagePayment": {
       "label": "Rata Mutuo",
       "placeholder": ""
     }
