@@ -6,173 +6,184 @@ import Input from "@Components/UI/Input.tsx";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 
+
+interface FormDefinition {
+    agencyRate: number,
+    bankRate: number,
+    monthlyRate:  number,
+    numberOfInstallments:  number,
+    mortgageDuration:  number,
+    budget:  number,
+    mortgage:  number,
+    bankAssessment:  number,
+    appraisal:  number,
+    substituteTax:  number,
+    fireAndExplosion:  number,
+    tcmPolicy:  number,
+    notary:  number,
+    extra:  number,
+    broker:  number,
+    mortgageDepositEstimate:  number,
+    bankAssessmentEstimate:  number,
+    initialInvestmentEstimate:  number,
+    mortgagePaymentEstimate:  number,
+    substituteTaxEstimate:  number,
+    brokerEstimate:  number,
+    notaryEstimate:  number,
+    agencyEstimate:  number,
+    currency: string
+}
+
+
 const Dashboard: React.FC = () => {
     const {t} = useTranslation();
+    const defaultFormData:FormDefinition = {
+        agencyRate: 4,
+        bankRate: 3.2,
+        monthlyRate: 0,
+        numberOfInstallments: 360,
+        mortgageDuration: 30,
+        budget: 0,
+        mortgage: 80,
+        bankAssessment: 1,
+        appraisal: 350,
+        substituteTax: 0.25,
+        fireAndExplosion: 2177,
+        tcmPolicy: 0,
+        notary: 5000,
+        extra: 0,
+        broker: 1,
+        mortgageDepositEstimate: 0,
+        bankAssessmentEstimate: 0,
+        initialInvestmentEstimate: 0,
+        mortgagePaymentEstimate: 0,
+        substituteTaxEstimate: 0,
+        brokerEstimate: 0,
+        notaryEstimate: 0,
+        agencyEstimate: 0,
+        currency: "€"
+    }
 
-    // Configuration states
-    const [agencyRate, setAgencyRate] = useState("4");
-    const [bankRate, setBankRate] = useState("2.98");
-    const [monthlyRate, setMonthlyRate] = useState("");
-    const [numberOfInstallments, setNumberOfInstallments] = useState("");
-    const [mortgageDuration, setMortgageDuration] = useState("30");
-    const [budget, setBudget] = useState("");
-    const [agency, setAgency] = useState("- €");
+    const [formData, setFormData] = useState(defaultFormData);
 
-    // Additional input states
-    const [mortgage, setMortgage] = useState("80");
-    const [bankAssessment, setBankAssessment] = useState("1");
-    const [appraisal, setAppraisal] = useState("350");
-    const [substituteTax, setSubstituteTax] = useState("0.25");
-    const [fireAndExplosion, setFireAndExplosion] = useState("2177");
-    const [tcmPolicy, setTcmPolicy] = useState("5000");
-    const [notary, setNotary] = useState("5000");
-    const [extra, setExtra] = useState("");
-    const [broker, setBroker] = useState("1");
+    const updateFormData = (name:string, value:any) => setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+    }))
 
-    // Estimate section states
-    const [mortgageDepositEstimate, setMortgageDepositEstimate] = useState("");
-    const [bankAssessmentEstimate, setBankAssessmentEstimate] = useState("");
-    const [initialInvestmentEstimate, setInitialInvestmentEstimate] = useState("");
-    const [mortgagePaymentEstimate, setMortgagePaymentEstimate] = useState("");
-    const [substituteTaxEstimate, setSubstituteTaxEstimate] = useState("");
-    const [brokerEstimate, setBrokerEstimate] = useState("");
-    const [notaryEstimate, setNotaryEstimate] = useState("");
-
-    // Handlers
-    const handleAgencyRateChange = (value: string) => setAgencyRate(value);
-    const handleBankRateChange = (value: string) => setBankRate(value);
-    const handlemortgageDurationChange = (value: string) => setMortgageDuration(value);
-    const handleBudgetChange = (value: string) => setBudget(value);
-
-    const handleMortgageChange = (value: string) => setMortgage(value);
-    const handleBankAssessmentChange = (value: string) => setBankAssessment(value);
-    const handleAppraisalChange = (value: string) => setAppraisal(value);
-    const handleSubstituteTaxChange = (value: string) => setSubstituteTax(value);
-    const handleFireAndExplosionChange = (value: string) => setFireAndExplosion(value);
-    const handleTcmPolicyChange = (value: string) => setTcmPolicy(value);
-    const handleNotaryChange = (value: string) => setNotary(value);
-    const handleExtraChange = (value: string) => setExtra(value);
-    const handleBrokerChange = (value: string) => setBroker(value);
-
+    const handleInputChange = (value: string, name:string) => updateFormData(name, value);
 
     // Effects
     useEffect(() => {
-        const rate = calculateMonthlyRate(parseFloat(bankRate));
-        setMonthlyRate(rate.toString());
-    }, [bankRate]);
+        const rate = calculateMonthlyRate(formData.bankRate);
+        updateFormData("monthlyRate", rate);
+    }, [formData.bankRate]);
 
     useEffect(() => {
-        const installments = calculateMortgageInstallments(parseInt(mortgageDuration));
-        setNumberOfInstallments(installments.toString());
-    }, [mortgageDuration]);
+        const installments = calculateMortgageInstallments(formData.mortgageDuration);
+        updateFormData("numberOfInstallments", installments);
+    }, [formData.mortgageDuration]);
 
     useEffect(() => {
-        const agencyCheck = agencyRate && !isNaN(parseFloat(agencyRate));
-        const budgetCheck = budget && !isNaN(parseFloat(budget));
+        const agencyCheck = Boolean(formData.agencyRate) && !isNaN(formData.agencyRate);
+        const budgetCheck = Boolean(formData.budget) && !isNaN(formData.budget);
 
         if (agencyCheck && budgetCheck) {
-            const agencyAmountWithoutIVA = agencyRate * budget / 100;
+            const agencyAmountWithoutIVA = formData.agencyRate * formData.budget / 100;
             const iva = 0.22 * agencyAmountWithoutIVA;
-            setAgency((agencyAmountWithoutIVA + iva).toFixed(2) + " €");
+            updateFormData("agencyEstimate", parseFloat((agencyAmountWithoutIVA + iva).toFixed(2)));
         } else {
-            setAgency("- €");
+            updateFormData("agencyEstimate", 0);
         }
-    }, [mortgageDuration, budget, bankRate, agencyRate]);
+    }, [formData.mortgageDuration, formData.budget, formData.bankRate, formData.agencyRate]);
 
 
     useEffect(() => {
-        const mortgageCheck: boolean = mortgage && !isNaN(parseFloat(mortgage));
-        const budgetCheck: boolean = budget && !isNaN(parseFloat(budget));
+        const mortgageCheck: boolean = Boolean(formData.mortgage) && !isNaN(formData.mortgage);
+        const budgetCheck: boolean = Boolean(formData.budget) && !isNaN(formData.budget);
 
         if (mortgageCheck && budgetCheck) {
-            const value = getMortgageDepositEstimate(budget, mortgage);
-            setMortgageDepositEstimate(value + " €")
+            const value = getMortgageDepositEstimate(formData.budget, formData.mortgage);
+            updateFormData("mortgageDepositEstimate", value)
         } else {
-            setMortgageDepositEstimate("- €");
+            updateFormData("mortgageDepositEstimate", 0);
         }
-    }, [mortgage, budget])
+    }, [formData.mortgage, formData.budget])
 
-    const getMortgageDepositEstimate = (housePrice, mortgagePerc) => housePrice - (housePrice * mortgagePerc / 100);
+    const getMortgageDepositEstimate = (housePrice:number, mortgagePerc:number) => housePrice - (housePrice * mortgagePerc / 100);
 
     useEffect(() => {
-        const mortgageCheck: boolean = mortgage && !isNaN(parseFloat(mortgage));
-        const budgetCheck: boolean = budget && !isNaN(parseFloat(budget));
-        const bankAssessmentCheck: boolean = bankAssessment && !isNaN(parseFloat(bankAssessment));
+        const mortgageCheck: boolean = Boolean(formData.mortgage) && !isNaN(formData.mortgage);
+        const budgetCheck: boolean = Boolean(formData.budget) && !isNaN(formData.budget);
+        const bankAssessmentCheck: boolean = Boolean(formData.bankAssessment) && !isNaN(formData.bankAssessment);
 
         if (mortgageCheck && budgetCheck && bankAssessmentCheck) {
-            const value = (bankAssessment * (budget * mortgage / 100)) / 100;
-            setBankAssessmentEstimate(value + " €")
+            const value = (formData.bankAssessment * (formData.budget * formData.mortgage / 100)) / 100;
+            updateFormData("bankAssessmentEstimate", value)
         } else {
-            setBankAssessmentEstimate("- €");
+            updateFormData("bankAssessmentEstimate", 0);
         }
 
-    }, [mortgage, budget, bankAssessment])
+    }, [formData.mortgage, formData.budget, formData.bankAssessment])
 
 
     useEffect(() => {
-        const mortgageCheck: boolean = mortgage && !isNaN(parseFloat(mortgage));
-        const budgetCheck: boolean = budget && !isNaN(parseFloat(budget));
-        const substituteTaxCheck: boolean = substituteTax && !isNaN(parseFloat(substituteTax));
+        const mortgageCheck: boolean = Boolean(formData.mortgage) && !isNaN(formData.mortgage);
+        const budgetCheck: boolean = Boolean(formData.budget) && !isNaN(formData.budget);
+        const substituteTaxCheck: boolean = Boolean(formData.substituteTax) && !isNaN(formData.substituteTax);
 
         if (mortgageCheck && budgetCheck && substituteTaxCheck) {
-            const value = (substituteTax * (budget * mortgage / 100)) / 100;
-            setSubstituteTaxEstimate(value + " €")
+            const value = (formData.substituteTax * (formData.budget * formData.mortgage / 100)) / 100;
+            updateFormData("substituteTaxEstimate", value)
         } else {
-            setSubstituteTaxEstimate("- €");
+            updateFormData("substituteTaxEstimate", 0);
         }
 
-    }, [mortgage, budget, substituteTax])
+    }, [formData.mortgage, formData.budget, formData.substituteTax])
 
     useEffect(() => {
-        const mortgageCheck: boolean = mortgage && !isNaN(parseFloat(mortgage));
-        const budgetCheck: boolean = budget && !isNaN(parseFloat(budget));
-        const brokerCheck: boolean = broker && !isNaN(parseFloat(broker));
+        const mortgageCheck: boolean = Boolean(formData.mortgage) && !isNaN(formData.mortgage);
+        const budgetCheck: boolean = Boolean(formData.budget) && !isNaN(formData.budget);
+        const brokerCheck: boolean = Boolean(formData.broker) && !isNaN(formData.broker);
 
         if (mortgageCheck && budgetCheck && brokerCheck) {
-            const value = (broker * (budget * mortgage / 100)) / 100;
-            setBrokerEstimate(value + " €")
+            const value = (formData.broker * (formData.budget * formData.mortgage / 100)) / 100;
+            updateFormData("brokerEstimate", value)
         } else {
-            setBrokerEstimate("- €");
+            updateFormData("brokerEstimate", 0);
         }
 
-    }, [mortgage, budget, broker])
+    }, [formData.mortgage, formData.budget, formData.broker])
 
     useEffect(() => {
-        const notaryCheck: boolean = notary && !isNaN(parseFloat(notary));
+        const notaryCheck: boolean = Boolean(formData.notary) && !isNaN(formData.notary);
         if (notaryCheck) {
-            setNotaryEstimate(notary + " €")
+            updateFormData("notaryEstimate", formData.notary)
         } else {
-            setNotaryEstimate("- €");
+            updateFormData("notaryEstimate", 0);
         }
 
-    }, [notary])
+    }, [formData.notary])
 
 
     useEffect(() => {
-            const monthlyRateCheck: boolean = monthlyRate && !isNaN(parseFloat(monthlyRate));
-            const budgetCheck: boolean = budget && !isNaN(parseFloat(budget));
-            const numberOfInstallmentsCheck: boolean = numberOfInstallments && !isNaN(parseFloat(numberOfInstallments));
+            const monthlyRateCheck: boolean = Boolean(formData.monthlyRate) && !isNaN(formData.monthlyRate);
+            const budgetCheck: boolean = Boolean(formData.budget) && !isNaN(formData.budget);
+            const numberOfInstallmentsCheck: boolean = Boolean(formData.numberOfInstallments) && !isNaN(formData.numberOfInstallments);
             if (monthlyRateCheck && budgetCheck && numberOfInstallmentsCheck) {
-                const value = (budget - getMortgageDepositEstimate(budget, mortgage)) * (monthlyRate *
-                    (Math.pow(1 + parseFloat(monthlyRate), parseFloat(numberOfInstallments))) /
-                    (Math.pow(1 + parseFloat(monthlyRate), parseFloat(numberOfInstallments)) - 1))
-                setMortgagePaymentEstimate(value.toFixed(2) + " €")
+                const value = (formData.budget - getMortgageDepositEstimate(formData.budget, formData.mortgage)) * (formData.monthlyRate *
+                    (Math.pow(1 + formData.monthlyRate, formData.numberOfInstallments)) /
+                    (Math.pow(1 + formData.monthlyRate, formData.numberOfInstallments) - 1))
+                updateFormData("mortgagePaymentEstimate", parseFloat(value.toFixed(2)))
             } else {
-                setMortgagePaymentEstimate("- €");
+                updateFormData("mortgagePaymentEstimate", 0);
             }
 
         },
-        [monthlyRate, numberOfInstallments, mortgage, budget])
+        [formData.monthlyRate, formData.numberOfInstallments, formData.mortgage, formData.budget])
 
-
-    // Calculation helpers
-    const calculateMortgageInstallments = (duration: number) => {
-        return duration ? (duration * 12).toFixed(0) : "Invalid mortgage Duration";
-    };
-
-    const calculateMonthlyRate = (bankRate: number) => {
-        return bankRate ? bankRate / 100 / 12 : 0;
-    };
+    const calculateMortgageInstallments = (duration: number) => duration ? parseInt((duration * 12).toFixed(0)) : 0;
+    const calculateMonthlyRate = (bankRate: number) => bankRate ? bankRate / 100 / 12 : 0;
 
     return (
         <div className="w-full h-full flex flex-row gap-10">
@@ -182,86 +193,86 @@ const Dashboard: React.FC = () => {
             <div className={"p-8 basis-full border-french-gray rounded-2xl border " + styles.bgDashboard}>
                 <Card title={t("configuration.title")}>
                     <div className="flex gap-2">
-                        <Input label={t("configuration.realEstateAgency.label")}
+                        <Input label={t("configuration.realEstateAgency.label")} symbol={"%"}
                                placeholder={t("configuration.realEstateAgency.placeholder")} inputType="text"
-                               value={agencyRate} disabled={false} onChange={handleAgencyRateChange}/>
+                               value={formData.agencyRate} name={"agencyRate"} disabled={false} onChange={handleInputChange}/>
                     </div>
                     <div className="flex gap-2">
                         <Input label={t("configuration.mortgage.label")}
-                               placeholder={t("configuration.mortgage.placeholder")} inputType="text" value={mortgage}
-                               disabled={false} onChange={handleMortgageChange}/>
+                               placeholder={t("configuration.mortgage.placeholder")}  symbol={"%"} inputType="text" value={formData.mortgage}
+                               disabled={false} name={"mortgage"} onChange={handleInputChange}/>
                         <Input label={t("configuration.bankRate.label")}
-                               placeholder={t("configuration.bankRate.placeholder")} inputType="text" value={bankRate}
-                               disabled={false} onChange={handleBankRateChange}/>
+                               placeholder={t("configuration.bankRate.placeholder")}  symbol={"%"} inputType="text" value={formData.bankRate}
+                               disabled={false} name={"bankRate"} onChange={handleInputChange}/>
                         <Input label={t("configuration.monthlyRate.label")}
-                               placeholder={t("configuration.monthlyRate.placeholder")} inputType="text"
-                               value={monthlyRate} disabled={true}/>
+                               placeholder={t("configuration.monthlyRate.placeholder")}  symbol={"%"} inputType="text"
+                               value={formData.monthlyRate} name={"monthlyRate"} disabled={true}/>
                         <Input label={t("configuration.mortgageDuration.label")}
-                               placeholder={t("configuration.mortgageDuration.placeholder")} inputType="text"
-                               value={mortgageDuration} disabled={false} onChange={handlemortgageDurationChange}/>
-                        <Input label={t("configuration.numberOfInstallments.label")}
+                               placeholder={t("configuration.mortgageDuration.placeholder")} inputType="text" symbol={"Y"}
+                               value={formData.mortgageDuration} name={"mortgageDuration"} disabled={false} onChange={handleInputChange}/>
+                        <Input label={t("configuration.numberOfInstallments.label")} symbol={"N°"}
                                placeholder={t("configuration.numberOfInstallments.placeholder")} inputType="text"
-                               value={numberOfInstallments} disabled={true}/>
+                               value={formData.numberOfInstallments} name={"numberOfInstallments"} disabled={true}/>
                     </div>
                     <div className="flex gap-2">
-                        <Input label={t("configuration.bankAssessment.label")}
+                        <Input label={t("configuration.bankAssessment.label")}  symbol={"%"}
                                placeholder={t("configuration.bankAssessment.placeholder")} inputType="text"
-                               value={bankAssessment} disabled={false} onChange={handleBankAssessmentChange}/>
+                               value={formData.bankAssessment} name={"bankAssessment"} disabled={false} onChange={handleInputChange}/>
                         <Input label={t("configuration.appraisal.label")}
-                               placeholder={t("configuration.appraisal.placeholder")} inputType="text" value={appraisal}
-                               disabled={false} onChange={handleAppraisalChange}/>
+                               placeholder={t("configuration.appraisal.placeholder")} symbol={formData.currency} inputType="text" value={formData.appraisal} name={"appraisal"}
+                               disabled={false} onChange={handleInputChange}/>
                         <Input label={t("configuration.substituteTax.label")}
-                               placeholder={t("configuration.substituteTax.placeholder")} inputType="text"
-                               value={substituteTax} disabled={false} onChange={handleSubstituteTaxChange}/>
+                               placeholder={t("configuration.substituteTax.placeholder")} symbol={"%"} inputType="text"
+                               value={formData.substituteTax} name={"substituteTax"} disabled={false} onChange={handleInputChange}/>
                         <Input label={t("configuration.fireAndExplosion.label")}
-                               placeholder={t("configuration.fireAndExplosion.placeholder")} inputType="text"
-                               value={fireAndExplosion} disabled={false} onChange={handleFireAndExplosionChange}/>
+                               placeholder={t("configuration.fireAndExplosion.placeholder")} symbol={formData.currency} inputType="text"
+                               value={formData.fireAndExplosion} name="fireAndExplosion" disabled={false} onChange={handleInputChange}/>
                         <Input label={t("configuration.tcmPolicy.label")}
-                               placeholder={t("configuration.tcmPolicy.placeholder")} inputType="text" value={tcmPolicy}
-                               disabled={false} onChange={handleTcmPolicyChange}/>
+                               placeholder={t("configuration.tcmPolicy.placeholder")} symbol={formData.currency} inputType="text" value={formData.tcmPolicy} name={"tcmPolicy"}
+                               disabled={false} onChange={handleInputChange}/>
                     </div>
                     <div className="flex gap-2">
                         <Input label={t("configuration.notary.label")}
-                               placeholder={t("configuration.notary.placeholder")} inputType="text" value={notary}
-                               disabled={false} onChange={handleNotaryChange}/>
-                        <Input label={t("configuration.extra.label")} placeholder={t("configuration.extra.placeholder")}
-                               inputType="text" value={extra} disabled={false} onChange={handleExtraChange}/>
+                               placeholder={t("configuration.notary.placeholder")} symbol={formData.currency} inputType="text" value={formData.notary} name={"notary"}
+                               disabled={false} onChange={handleInputChange}/>
+                        <Input label={t("configuration.extra.label")} placeholder={t("configuration.extra.placeholder")} symbol={formData.currency}
+                               inputType="text" value={formData.extra} name={"extra"} disabled={false} onChange={handleInputChange}/>
                         <Input label={t("configuration.broker.label")}
-                               placeholder={t("configuration.broker.placeholder")} inputType="text" value={broker}
-                               disabled={false} onChange={handleBrokerChange}/>
+                               placeholder={t("configuration.broker.placeholder")} symbol={"%"} inputType="text" value={formData.broker} name={"broker"}
+                               disabled={false} onChange={handleInputChange}/>
                     </div>
                 </Card>
 
                 <Card title={t("budget.title")}>
                     <div className="flex gap-2">
-                        <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")}
-                               inputType="text" value={budget} onChange={handleBudgetChange}/>
+                        <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")} symbol={formData.currency}
+                               inputType="text" value={formData.budget} name={"budget"} onChange={handleInputChange}/>
                     </div>
                 </Card>
 
                 <Card title={t("estimate.title")}>
                     <div className="flex gap-2">
-                        <Input label={t("estimate.agency.label")} placeholder={t("estimate.agency.placeholder")}
-                               inputType="text" value={agency} disabled={true}/>
-                        <Input label={t("estimate.mortgageDeposit.label")}
+                        <Input label={t("estimate.agency.label")} placeholder={t("estimate.agency.placeholder")} symbol={formData.currency}
+                               inputType="text" value={formData.agencyEstimate} name={"agencyEstimate"} disabled={true}/>
+                        <Input label={t("estimate.mortgageDeposit.label")} symbol={formData.currency}
                                placeholder={t("estimate.mortgageDeposit.placeholder")} inputType="text"
-                               value={mortgageDepositEstimate} disabled={true}/>
-                        <Input label={t("estimate.bankAssessment.label")}
+                               value={formData.mortgageDepositEstimate} name={"mortgageDepositEstimate"} disabled={true}/>
+                        <Input label={t("estimate.bankAssessment.label")} symbol={formData.currency}
                                placeholder={t("estimate.bankAssessment.placeholder")} inputType="text"
-                               value={bankAssessmentEstimate} disabled={true}/>
-                        <Input label={t("estimate.substituteTax.label")}
+                               value={formData.bankAssessmentEstimate} name={"bankAssessmentEstimate"} disabled={true}/>
+                        <Input label={t("estimate.substituteTax.label")} symbol={formData.currency}
                                placeholder={t("estimate.substituteTax.placeholder")} inputType="text"
-                               value={substituteTaxEstimate} disabled={true}/>
-                        <Input label={t("estimate.broker.label")} placeholder={t("estimate.broker.placeholder")}
-                               inputType="text" value={brokerEstimate} disabled={true}/>
-                        <Input label={t("estimate.notary.label")} placeholder={t("estimate.notary.placeholder")}
-                               inputType="text" value={notaryEstimate} disabled={true}/>
-                        <Input label={t("estimate.initialInvestment.label")}
+                               value={formData.substituteTaxEstimate} name={"substituteTaxEstimate"} disabled={true}/>
+                        <Input label={t("estimate.broker.label")} placeholder={t("estimate.broker.placeholder")} symbol={formData.currency}
+                               inputType="text" value={formData.brokerEstimate} name={"brokerEstimate"} disabled={true}/>
+                        <Input label={t("estimate.notary.label")} placeholder={t("estimate.notary.placeholder")} symbol={formData.currency}
+                               inputType="text" value={formData.notaryEstimate} name={"notaryEstimate"} disabled={true}/>
+                        <Input label={t("estimate.initialInvestment.label")} symbol={formData.currency}
                                placeholder={t("estimate.initialInvestment.placeholder")} inputType="text"
-                               value={initialInvestmentEstimate} disabled={true}/>
-                        <Input label={t("estimate.mortgagePayment.label")}
+                               value={formData.initialInvestmentEstimate} name={"initialInvestmentEstimate"} disabled={true}/>
+                        <Input label={t("estimate.mortgagePayment.label")} symbol={formData.currency}
                                placeholder={t("estimate.mortgagePayment.placeholder")} inputType="text"
-                               value={mortgagePaymentEstimate} disabled={true}/>
+                               value={formData.mortgagePaymentEstimate} name={"mortgagePaymentEstimate"} disabled={true}/>
                     </div>
                 </Card>
             </div>

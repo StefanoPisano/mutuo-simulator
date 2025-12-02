@@ -3,18 +3,29 @@ import {type ChangeEvent} from "react";
 
 interface InputProps {
     label: string,
+    name: string,
+    symbol?: string,
     placeholder: string,
     inputType: string,
     disabled?: boolean,
-    value?: string,
-    onChange?: (value: string) => void
+    value?: any,
+    onChange?: (value: any, name: string) => void
 }
 
-const Input: React.FC<InputProps> = ({label, placeholder, inputType, disabled = false, value, onChange}) => {
+const Input: React.FC<InputProps> = ({
+                                         label,
+                                         name,
+                                         symbol,
+                                         placeholder,
+                                         inputType,
+                                         disabled = false,
+                                         value,
+                                         onChange
+                                     }) => {
 
     const change = (event: ChangeEvent<HTMLInputElement>) => {
-        if(onChange) {
-            onChange(event.target.value);
+        if (onChange) {
+            onChange(event.target.value, name);
         }
     }
 
@@ -23,14 +34,16 @@ const Input: React.FC<InputProps> = ({label, placeholder, inputType, disabled = 
             <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={label}>
                 {label}
             </label>
-            <input
-                type={inputType}
-                id={label}
-                placeholder={placeholder}
-                disabled={disabled}
-                value={value}
-                onChange={change}
-                className="
+            <div className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md"}>
+                {symbol && <span className={"flex justify-center w-10"}>{symbol}</span>}
+                <input
+                    type={inputType}
+                    id={label}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    value={value}
+                    onChange={change}
+                    className="
           block
           w-full
           p-2
@@ -43,7 +56,8 @@ const Input: React.FC<InputProps> = ({label, placeholder, inputType, disabled = 
           placeholder:text-xs
           placeholder:italic
         "
-            />
+                />
+            </div>
         </div>
     )
 }
