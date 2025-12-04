@@ -1,5 +1,5 @@
 {
-  "welcome": "Ciao Mondo!",
+  "disclaimer": "I prezzi forniti dall'applicazione rappresentano solo una stima indicativa basata sugli input forniti dall'utente. Questa stima non costituisce un'offerta reale e non deve essere interpretata come un prezzo finale o vincolante per l'acquisto di una casa. I costi effettivi possono variare significativamente in base a fattori come il mercato immobiliare attuale, le condizioni specifiche dell'immobile, e altre variabili imprevedibili. Gli utenti sono invitati a consultare un professionista del settore immobiliare per ottenere informazioni più accurate e dettagliate riguardo ai costi.",
   "configuration": {
     "title": "Parametri",
   "realEstateAgency": {
@@ -18,17 +18,9 @@
     "label": "Tasso Banca",
     "placeholder": "Inserisci tasso"
   },
-  "monthlyRate": {
-    "label": "Tasso Mensile",
-    "placeholder": "Inserisci tasso mensile"
-  },
   "mortgageDuration": {
     "label": "Durata Mutuo (Anni)",
     "placeholder": "Inserisci durata in anni"
-  },
-  "numberOfInstallments": {
-    "label": "Numero Rate",
-    "placeholder": "Inserisci numero di rate"
   },
   "extra": {
     "label": "Extra",

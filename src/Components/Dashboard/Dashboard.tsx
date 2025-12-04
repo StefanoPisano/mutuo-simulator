@@ -1,12 +1,10 @@
 import * as React from "react";
-import styles from "./dashboard.module.scss";
+import {useEffect, useState} from "react";
 import Card from "@Components/UI/Card.tsx";
 import Input from "@Components/UI/Input.tsx";
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
 import type {FormDefinition} from "@Components/interfaces/FormDefinition.ts";
 import Estimates from "@Components/Estimates/Estimates.tsx";
-import type {FormDefinitionEstimates} from "@Components/interfaces/FormDefinitionEstimates.ts";
 import type {EventResponse} from "@Components/interfaces/EventResponse.ts";
 import type {FormField} from "@Components/interfaces/FormField.ts";
 
@@ -33,30 +31,10 @@ const Dashboard: React.FC = () => {
     };
 
 
-    const defaultEstimates: FormDefinitionEstimates = {
-        mortgageDepositEstimate: {isValid: true, value: 0},
-        bankAssessmentEstimate: {isValid: true, value: 0},
-        initialInvestmentEstimate: {isValid: true, value: 0},
-        mortgagePaymentEstimate: {isValid: true, value: 0},
-        substituteTaxEstimate: {isValid: true, value: 0},
-        brokerEstimate: {isValid: true, value: 0},
-        notaryEstimate: {isValid: true, value: 0},
-        agencyEstimate: {isValid: true, value: 0},
-        currency: {isValid: true, value: defaultFormData.currency.value}
-    }
-
-    const [estimates, setEstimates] = useState<FormDefinitionEstimates>(defaultEstimates);
     const [formData, setFormData] = useState(defaultFormData);
 
-    const updateFormData = (name: string, value: any) => {
+    const updateFormData = (name: string, value: FormField<any>) => {
         setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }))
-    }
-
-    const updateEstimatesData = (name: string, value: FormField<any>) => {
-        setEstimates((prevData) => ({
             ...prevData,
             [name]: value,
         }))
@@ -107,111 +85,6 @@ const Dashboard: React.FC = () => {
         }
     }, [formData.mortgageDuration]);
 
-    useEffect(() => {
-        const agencyCheck = Boolean(formData.agencyRate.value) && formData.agencyRate.isValid && !isNaN(formData.agencyRate.value);
-        const budgetCheck = Boolean(formData.budget.value) && formData.budget.isValid && !isNaN(formData.budget.value);
-
-        if (agencyCheck && budgetCheck) {
-            const agencyAmountWithoutIVA = formData.agencyRate.value * formData.budget.value / 100;
-            const iva = 0.22 * agencyAmountWithoutIVA;
-            updateEstimatesData("agencyEstimate", {
-                isValid: false,
-                value: parseFloat((agencyAmountWithoutIVA + iva).toFixed(2))
-            });
-        } else {
-            updateEstimatesData("agencyEstimate", {isValid: false, value: "-"});
-        }
-    }, [formData.mortgageDuration, formData.budget, formData.bankRate, formData.agencyRate]);
-
-
-    useEffect(() => {
-        const mortgageCheck: boolean = Boolean(formData.mortgage.value) && formData.mortgage.isValid && !isNaN(formData.mortgage.value);
-        const budgetCheck: boolean = Boolean(formData.budget.value) && formData.budget.isValid && !isNaN(formData.budget.value);
-
-        if (mortgageCheck && budgetCheck) {
-            const value = getMortgageDepositEstimate(formData.budget.value, formData.mortgage.value);
-            updateEstimatesData("mortgageDepositEstimate", {isValid: true, value: value})
-        } else {
-            updateEstimatesData("mortgageDepositEstimate", {isValid: false, value: "-"});
-        }
-    }, [formData.mortgage, formData.budget])
-
-    const getMortgageDepositEstimate = (housePrice: number, mortgagePerc: number) => housePrice - (housePrice * mortgagePerc / 100);
-
-    useEffect(() => {
-        const mortgageCheck: boolean = Boolean(formData.mortgage.value) && formData.mortgage.isValid && !isNaN(formData.mortgage.value);
-        const budgetCheck: boolean = Boolean(formData.budget.value) && formData.budget.isValid && !isNaN(formData.budget.value);
-        const bankAssessmentCheck: boolean = Boolean(formData.bankAssessment.value) && formData.bankAssessment.isValid && !isNaN(formData.bankAssessment.value);
-
-        if (mortgageCheck && budgetCheck && bankAssessmentCheck) {
-            const value = (formData.bankAssessment.value * (formData.budget.value * formData.mortgage.value / 100)) / 100;
-            updateEstimatesData("bankAssessmentEstimate", {isValid: true, value: value})
-        } else {
-            updateEstimatesData("bankAssessmentEstimate", {isValid: false, value: "-"});
-        }
-
-    }, [formData.mortgage, formData.budget, formData.bankAssessment])
-
-
-    useEffect(() => {
-        const mortgageCheck: boolean = Boolean(formData.mortgage.value) && formData.mortgage.isValid && !isNaN(formData.mortgage.value);
-        const budgetCheck: boolean = Boolean(formData.budget.value) && formData.budget.isValid && !isNaN(formData.budget.value);
-        const substituteTaxCheck: boolean = Boolean(formData.substituteTax.value) && formData.substituteTax.isValid && !isNaN(formData.substituteTax.value);
-
-        if (mortgageCheck && budgetCheck && substituteTaxCheck) {
-            const value = (formData.substituteTax.value * (formData.budget.value * formData.mortgage.value / 100)) / 100;
-            updateEstimatesData("substituteTaxEstimate", {isValid: true, value: value})
-        } else {
-            updateEstimatesData("substituteTaxEstimate", {isValid: false, value: "-"});
-        }
-
-    }, [formData.mortgage, formData.budget, formData.substituteTax])
-
-    useEffect(() => {
-        const mortgageCheck: boolean = Boolean(formData.mortgage.value) && formData.mortgage.isValid && !isNaN(formData.mortgage.value);
-        const budgetCheck: boolean = Boolean(formData.budget.value) && formData.budget.isValid && !isNaN(formData.budget.value);
-        const brokerCheck: boolean = Boolean(formData.broker.value) && formData.broker.isValid && !isNaN(formData.broker.value);
-
-        if (mortgageCheck && budgetCheck && brokerCheck) {
-            const value = (formData.broker.value * (formData.budget.value * formData.mortgage.value / 100)) / 100;
-            updateEstimatesData("brokerEstimate", {isValid: true, value: value})
-        } else {
-            updateEstimatesData("brokerEstimate", {isValid: false, value: "-"});
-        }
-
-    }, [formData.mortgage, formData.budget, formData.broker])
-
-    useEffect(() => {
-        const notaryCheck: boolean = Boolean(formData.notary) && formData.notary.isValid && !isNaN(formData.notary.value);
-        if (notaryCheck) {
-            updateEstimatesData("notaryEstimate", {isValid: true, value: formData.notary.value})
-        } else {
-            updateEstimatesData("notaryEstimate", {isValid: false, value: "-"});
-        }
-
-    }, [formData.notary])
-
-
-    useEffect(() => {
-            const monthlyRateCheck: boolean = Boolean(formData.monthlyRate.value) && formData.monthlyRate.isValid && !isNaN(formData.monthlyRate.value);
-            const budgetCheck: boolean = Boolean(formData.budget.value) && formData.budget.isValid && !isNaN(formData.budget.value);
-            const numberOfInstallmentsCheck: boolean = Boolean(formData.numberOfInstallments) && formData.numberOfInstallments.isValid && !isNaN(formData.numberOfInstallments.value);
-            const mortgageCheck: boolean = Boolean(formData.mortgage.value) && formData.mortgage.isValid && !isNaN(formData.mortgage.value);
-
-            if (monthlyRateCheck && budgetCheck && numberOfInstallmentsCheck && mortgageCheck) {
-                const value = (formData.budget.value - getMortgageDepositEstimate(formData.budget.value, formData.mortgage.value)) * (formData.monthlyRate.value *
-                    (Math.pow(1 + formData.monthlyRate.value, formData.numberOfInstallments.value)) /
-                    (Math.pow(1 + formData.monthlyRate.value, formData.numberOfInstallments.value) - 1))
-
-                updateEstimatesData("mortgagePaymentEstimate", {
-                    isValid: true, value: parseFloat(value.toFixed(2))
-                })
-            } else {
-                updateEstimatesData("mortgagePaymentEstimate", {isValid: false, value: "-"});
-            }
-
-        },
-        [formData.monthlyRate, formData.numberOfInstallments, formData.mortgage, formData.budget])
 
     const calculateMortgageInstallments = (duration: number) => duration ? parseInt((duration * 12).toFixed(0)) : 0;
     const calculateMonthlyRate = (bankRate: number) => bankRate ? bankRate / 100 / 12 : 0;
@@ -219,7 +92,16 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="w-full h-full flex flex-row gap-10">
-            <div className={"p-8 basis-full" + styles.bgDashboard}>
+            <div className={"p-8 basis-full"}>
+
+                <Card title={t("budget.title")}>
+                    <div className="flex gap-2">
+                        <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")}
+                               symbol={formData.currency.value}
+                               inputType="text" value={formData.budget} name={"budget"} onChange={handleInputChange}/>
+                    </div>
+                </Card>
+
                 <Card title={t("configuration.title")}>
                     <div className="flex gap-2">
                         <Input label={t("configuration.realEstateAgency.label")} symbol={"%"}
@@ -236,19 +118,13 @@ const Dashboard: React.FC = () => {
                                placeholder={t("configuration.bankRate.placeholder")} symbol={"%"} inputType="text"
                                value={formData.bankRate}
                                disabled={false} name={"bankRate"} onChange={handleInputChange}/>
-                        <Input label={t("configuration.monthlyRate.label")}
-                               placeholder={t("configuration.monthlyRate.placeholder")} symbol={"%"} inputType="text"
-                               value={formData.monthlyRate} name={"monthlyRate"} disabled={true}/>
                         <Input label={t("configuration.mortgageDuration.label")}
                                placeholder={t("configuration.mortgageDuration.placeholder")} inputType="text"
                                symbol={"Y"}
                                value={formData.mortgageDuration} name={"mortgageDuration"} disabled={false}
                                onChange={handleInputChange}/>
-                        <Input label={t("configuration.numberOfInstallments.label")} symbol={"N°"}
-                               placeholder={t("configuration.numberOfInstallments.placeholder")} inputType="text"
-                               value={formData.numberOfInstallments} name={"numberOfInstallments"} disabled={true}/>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-auto gap-2">
                         <Input label={t("configuration.bankAssessment.label")} symbol={"%"}
                                placeholder={t("configuration.bankAssessment.placeholder")} inputType="text"
                                value={formData.bankAssessment} name={"bankAssessment"} disabled={false}
@@ -272,7 +148,7 @@ const Dashboard: React.FC = () => {
                                inputType="text" value={formData.tcmPolicy} name={"tcmPolicy"}
                                disabled={false} onChange={handleInputChange}/>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-auto gap-2">
                         <Input label={t("configuration.notary.label")}
                                placeholder={t("configuration.notary.placeholder")} symbol={formData.currency.value}
                                inputType="text" value={formData.notary} name={"notary"}
@@ -288,15 +164,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </Card>
 
-                <Card title={t("budget.title")}>
-                    <div className="flex gap-2">
-                        <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")}
-                               symbol={formData.currency.value}
-                               inputType="text" value={formData.budget} name={"budget"} onChange={handleInputChange}/>
-                    </div>
-                </Card>
-
-                <Estimates estimates={estimates}/>
+                <Estimates inputData={formData}/>
 
             </div>
         </div>

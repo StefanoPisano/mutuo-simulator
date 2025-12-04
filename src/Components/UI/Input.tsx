@@ -14,7 +14,6 @@ interface InputProps {
     disabled?: boolean,
     value: FormField<any>,
     onChange?: (value: any, name: string) => EventResponse,
-    // validate?: (value: any) => EventResponse
 }
 
 const Input: React.FC<InputProps> = ({

@@ -26,11 +26,13 @@ const LanguageSelector: React.FC = () => {
 
     return (
         <>
-            <div className={"flex flex-row justify-end gap-2 text-xl"}>
-                {availableLanguages.map((lang) =>
-                    (<div key={lang.id} onClick={() => handleChangeLanguage(lang.id)}
-                          className={"cursor-pointer " + (lang.id === selectedLanguage ? " border-yimin-blue border-b-4" : "")}>{lang.label}</div>))
-                }
+            <div className={"flex flex-row justify-end text-xl "}>
+                <div className={"flex -flew-row gap-4 bg-yimin-blue p-2 pl-3.5 pr-3.5 rounded-xl"}>
+                    {availableLanguages.map((lang) =>
+                        (<div key={lang.id} onClick={() => handleChangeLanguage(lang.id)}
+                              className={"cursor-pointer " + (lang.id === selectedLanguage ? " border-coral border-b-4" : "")}>{lang.label}</div>))
+                    }
+                </div>
             </div>
         </>
     )
