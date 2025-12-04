@@ -1,5 +1,4 @@
 import * as React from "react";
-import SideBar from "@Components/Dashboard/SideBar/SideBar.tsx";
 import styles from "./dashboard.module.scss";
 import Card from "@Components/UI/Card.tsx";
 import Input from "@Components/UI/Input.tsx";
@@ -100,7 +99,7 @@ const Dashboard: React.FC = () => {
     }, [formData.bankRate]);
 
     useEffect(() => {
-        if(formData.mortgageDuration.isValid) {
+        if (formData.mortgageDuration.isValid) {
             const installments = calculateMortgageInstallments(formData.mortgageDuration.value);
             updateFormData("numberOfInstallments", {isValid: true, value: installments});
         } else {
@@ -220,10 +219,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="w-full h-full flex flex-row gap-10">
-            <div className="basis-24">
-                <SideBar/>
-            </div>
-            <div className={"p-8 basis-full border-french-gray rounded-2xl border " + styles.bgDashboard}>
+            <div className={"p-8 basis-full" + styles.bgDashboard}>
                 <Card title={t("configuration.title")}>
                     <div className="flex gap-2">
                         <Input label={t("configuration.realEstateAgency.label")} symbol={"%"}

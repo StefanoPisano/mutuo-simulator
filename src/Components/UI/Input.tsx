@@ -2,6 +2,8 @@ import * as React from "react";
 import {type ChangeEvent, useState} from "react";
 import type {EventResponse} from "@Components/interfaces/EventResponse.ts";
 import type {FormField} from "@Components/interfaces/FormField.ts";
+import MoneyIcon from '@mui/icons-material/Money';
+import Percent from '@mui/icons-material/Percent';
 
 interface InputProps {
     label: string,
@@ -41,7 +43,10 @@ const Input: React.FC<InputProps> = ({
                 {label}
             </label>
             <div className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md"}>
-                {symbol && <span className={"flex justify-center w-10"}>{symbol}</span>}
+                {symbol && <span className={"flex justify-center w-10"}>{
+                            symbol === "%" ? <Percent fontSize={"small"}/>
+                  :   <MoneyIcon fontSize={"small"}/>
+                }</span>}
                 <input
                     type={inputType}
                     id={label}
