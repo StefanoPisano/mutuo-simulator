@@ -1,4 +1,4 @@
-import type {FormField} from "@Components/interfaces/FormField.ts";
+import type {FormField} from "../interfaces/FormField.ts";
 
 export interface FormDefinition {
     agencyRate: FormField<number>;

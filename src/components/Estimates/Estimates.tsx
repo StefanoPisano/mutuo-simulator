@@ -1,11 +1,11 @@
 import * as React from "react";
-import Input from "@Components/UI/Input.tsx";
-import Card from "@Components/UI/Card.tsx";
+import Input from "../UI/Input.tsx";
+import Card from "../UI/Card.tsx";
 import {useTranslation} from "react-i18next";
-import type {FormDefinitionEstimates} from "@Components/interfaces/FormDefinitionEstimates.ts";
+import type {FormDefinitionEstimates} from "../interfaces/FormDefinitionEstimates.ts";
 import {useEffect, useState} from "react";
-import type {FormField} from "@Components/interfaces/FormField.ts";
-import type {FormDefinition} from "@Components/interfaces/FormDefinition.ts";
+import type {FormField} from "../interfaces/FormField.ts";
+import type {FormDefinition} from "../interfaces/FormDefinition.ts";
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
