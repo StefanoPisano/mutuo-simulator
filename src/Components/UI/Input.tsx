@@ -1,5 +1,7 @@
 import * as React from "react";
-import {type ChangeEvent} from "react";
+import {type ChangeEvent, useState} from "react";
+import type {EventResponse} from "@Components/interfaces/EventResponse.ts";
+import type {FormField} from "@Components/interfaces/FormField.ts";
 
 interface InputProps {
     label: string,
@@ -8,8 +10,9 @@ interface InputProps {
     placeholder: string,
     inputType: string,
     disabled?: boolean,
-    value?: any,
-    onChange?: (value: any, name: string) => void
+    value: FormField<any>,
+    onChange?: (value: any, name: string) => EventResponse,
+    // validate?: (value: any) => EventResponse
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,10 +25,13 @@ const Input: React.FC<InputProps> = ({
                                          value,
                                          onChange
                                      }) => {
+    const [inputStatus, setInputStatus] = useState<EventResponse>({ hasError: false});
 
     const change = (event: ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
-            onChange(event.target.value, name);
+            const result = onChange(event.target.value, name);
+
+            setInputStatus(result);
         }
     }
 
@@ -41,7 +47,7 @@ const Input: React.FC<InputProps> = ({
                     id={label}
                     placeholder={placeholder}
                     disabled={disabled}
-                    value={value}
+                    value={value.value}
                     onChange={change}
                     className="
           block
@@ -58,6 +64,11 @@ const Input: React.FC<InputProps> = ({
         "
                 />
             </div>
+            {
+                inputStatus.hasError &&
+                <div className={"text-xs m-1 p-1 border-gray-300 bg-antiflash-white rounded-md text-chocolate-cosmos font-bold"}>{inputStatus.msg}</div>
+
+            }
         </div>
     )
 }
