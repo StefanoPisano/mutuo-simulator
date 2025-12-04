@@ -15,35 +15,35 @@ import type {FormField} from "@Components/interfaces/FormField.ts";
 const Dashboard: React.FC = () => {
     const {t} = useTranslation();
     const defaultFormData: FormDefinition = {
-        agencyRate: { isValid: true, value: 4 },
-        bankRate: { isValid: true, value: 3.2 },
-        monthlyRate: { isValid: true, value: 0 },
-        numberOfInstallments: { isValid: true, value: 360 },
-        mortgageDuration: { isValid: true, value: 30 },
-        budget: { isValid: true, value: 0 },
-        mortgage: { isValid: true, value: 80 },
-        bankAssessment: { isValid: true, value: 1 },
-        appraisal: { isValid: true, value: 350 },
-        substituteTax: { isValid: true, value: 0.25 },
-        fireAndExplosion: { isValid: true, value: 2177 },
-        tcmPolicy: { isValid: true, value: 0 },
-        notary: { isValid: true, value: 5000 },
-        extra: { isValid: true, value: 0 },
-        broker: { isValid: true, value: 1 },
-        currency: { isValid: true, value: "€" }
+        agencyRate: {isValid: true, value: 4},
+        bankRate: {isValid: true, value: 3.2},
+        monthlyRate: {isValid: true, value: 0},
+        numberOfInstallments: {isValid: true, value: 360},
+        mortgageDuration: {isValid: true, value: 30},
+        budget: {isValid: true, value: 0},
+        mortgage: {isValid: true, value: 80},
+        bankAssessment: {isValid: true, value: 1},
+        appraisal: {isValid: true, value: 350},
+        substituteTax: {isValid: true, value: 0.25},
+        fireAndExplosion: {isValid: true, value: 2177},
+        tcmPolicy: {isValid: true, value: 0},
+        notary: {isValid: true, value: 5000},
+        extra: {isValid: true, value: 0},
+        broker: {isValid: true, value: 1},
+        currency: {isValid: true, value: "€"}
     };
 
 
     const defaultEstimates: FormDefinitionEstimates = {
-        mortgageDepositEstimate: { isValid: true, value: 0 },
-        bankAssessmentEstimate: { isValid: true, value: 0 },
-        initialInvestmentEstimate: { isValid: true, value: 0 },
-        mortgagePaymentEstimate: { isValid: true, value: 0 },
-        substituteTaxEstimate: { isValid: true, value: 0 },
-        brokerEstimate: { isValid: true, value: 0 },
-        notaryEstimate: { isValid: true, value: 0 },
-        agencyEstimate: { isValid: true, value: 0 },
-        currency: { isValid: true, value: defaultFormData.currency.value }
+        mortgageDepositEstimate: {isValid: true, value: 0},
+        bankAssessmentEstimate: {isValid: true, value: 0},
+        initialInvestmentEstimate: {isValid: true, value: 0},
+        mortgagePaymentEstimate: {isValid: true, value: 0},
+        substituteTaxEstimate: {isValid: true, value: 0},
+        brokerEstimate: {isValid: true, value: 0},
+        notaryEstimate: {isValid: true, value: 0},
+        agencyEstimate: {isValid: true, value: 0},
+        currency: {isValid: true, value: defaultFormData.currency.value}
     }
 
     const [estimates, setEstimates] = useState<FormDefinitionEstimates>(defaultEstimates);
@@ -74,14 +74,21 @@ const Dashboard: React.FC = () => {
     const handleValidation = (value: number, name: string): EventResponse => {
         switch (name) {
             case 'agencyRate':
-            case 'mortgage': {
+            case 'monthlyRate':
+            case 'bankRate':
+            case 'bankAssessment':
+            case 'mortgage':
+            case 'broker': {
                 return isNaN(value) || value > 100 || value < 0 ? {
                     hasError: true,
                     msg: 'Invalid percentage'
                 } : {hasError: false}
             }
             default: {
-                return {hasError: false}
+                return isNaN(value) || value < 0 ? {
+                    hasError: true,
+                    msg: 'Must be a number greater than 0'
+                } : {hasError: false}
             }
         }
     }
@@ -93,8 +100,12 @@ const Dashboard: React.FC = () => {
     }, [formData.bankRate]);
 
     useEffect(() => {
-        const installments = calculateMortgageInstallments(formData.mortgageDuration.value);
-        updateFormData("numberOfInstallments", {isValid: true, value: installments});
+        if(formData.mortgageDuration.isValid) {
+            const installments = calculateMortgageInstallments(formData.mortgageDuration.value);
+            updateFormData("numberOfInstallments", {isValid: true, value: installments});
+        } else {
+            updateFormData("numberOfInstallments", {isValid: false, value: "-"});
+        }
     }, [formData.mortgageDuration]);
 
     useEffect(() => {
@@ -104,9 +115,12 @@ const Dashboard: React.FC = () => {
         if (agencyCheck && budgetCheck) {
             const agencyAmountWithoutIVA = formData.agencyRate.value * formData.budget.value / 100;
             const iva = 0.22 * agencyAmountWithoutIVA;
-            updateEstimatesData("agencyEstimate",  {isValid: false, value: parseFloat((agencyAmountWithoutIVA + iva).toFixed(2))});
+            updateEstimatesData("agencyEstimate", {
+                isValid: false,
+                value: parseFloat((agencyAmountWithoutIVA + iva).toFixed(2))
+            });
         } else {
-            updateEstimatesData("agencyEstimate",  {isValid: false, value: "-"});
+            updateEstimatesData("agencyEstimate", {isValid: false, value: "-"});
         }
     }, [formData.mortgageDuration, formData.budget, formData.bankRate, formData.agencyRate]);
 
@@ -117,9 +131,9 @@ const Dashboard: React.FC = () => {
 
         if (mortgageCheck && budgetCheck) {
             const value = getMortgageDepositEstimate(formData.budget.value, formData.mortgage.value);
-            updateEstimatesData("mortgageDepositEstimate",  {isValid: true, value: value})
+            updateEstimatesData("mortgageDepositEstimate", {isValid: true, value: value})
         } else {
-            updateEstimatesData("mortgageDepositEstimate",  {isValid: false, value: "-"});
+            updateEstimatesData("mortgageDepositEstimate", {isValid: false, value: "-"});
         }
     }, [formData.mortgage, formData.budget])
 
@@ -134,7 +148,7 @@ const Dashboard: React.FC = () => {
             const value = (formData.bankAssessment.value * (formData.budget.value * formData.mortgage.value / 100)) / 100;
             updateEstimatesData("bankAssessmentEstimate", {isValid: true, value: value})
         } else {
-            updateEstimatesData("bankAssessmentEstimate",  {isValid: false, value: "-"});
+            updateEstimatesData("bankAssessmentEstimate", {isValid: false, value: "-"});
         }
 
     }, [formData.mortgage, formData.budget, formData.bankAssessment])
@@ -149,7 +163,7 @@ const Dashboard: React.FC = () => {
             const value = (formData.substituteTax.value * (formData.budget.value * formData.mortgage.value / 100)) / 100;
             updateEstimatesData("substituteTaxEstimate", {isValid: true, value: value})
         } else {
-            updateEstimatesData("substituteTaxEstimate",  {isValid: false, value: "-"});
+            updateEstimatesData("substituteTaxEstimate", {isValid: false, value: "-"});
         }
 
     }, [formData.mortgage, formData.budget, formData.substituteTax])
@@ -163,7 +177,7 @@ const Dashboard: React.FC = () => {
             const value = (formData.broker.value * (formData.budget.value * formData.mortgage.value / 100)) / 100;
             updateEstimatesData("brokerEstimate", {isValid: true, value: value})
         } else {
-            updateEstimatesData("brokerEstimate",  {isValid: false, value: "-"});
+            updateEstimatesData("brokerEstimate", {isValid: false, value: "-"});
         }
 
     }, [formData.mortgage, formData.budget, formData.broker])
@@ -173,7 +187,7 @@ const Dashboard: React.FC = () => {
         if (notaryCheck) {
             updateEstimatesData("notaryEstimate", {isValid: true, value: formData.notary.value})
         } else {
-            updateEstimatesData("notaryEstimate",  {isValid: false, value: "-"});
+            updateEstimatesData("notaryEstimate", {isValid: false, value: "-"});
         }
 
     }, [formData.notary])
@@ -190,8 +204,9 @@ const Dashboard: React.FC = () => {
                     (Math.pow(1 + formData.monthlyRate.value, formData.numberOfInstallments.value)) /
                     (Math.pow(1 + formData.monthlyRate.value, formData.numberOfInstallments.value) - 1))
 
-                updateEstimatesData("mortgagePaymentEstimate", {isValid: true, value: parseFloat(value.toFixed(2))
-            })
+                updateEstimatesData("mortgagePaymentEstimate", {
+                    isValid: true, value: parseFloat(value.toFixed(2))
+                })
             } else {
                 updateEstimatesData("mortgagePaymentEstimate", {isValid: false, value: "-"});
             }
@@ -251,7 +266,8 @@ const Dashboard: React.FC = () => {
                                value={formData.substituteTax} name={"substituteTax"} disabled={false}
                                onChange={handleInputChange}/>
                         <Input label={t("configuration.fireAndExplosion.label")}
-                               placeholder={t("configuration.fireAndExplosion.placeholder")} symbol={formData.currency.value}
+                               placeholder={t("configuration.fireAndExplosion.placeholder")}
+                               symbol={formData.currency.value}
                                inputType="text"
                                value={formData.fireAndExplosion} name="fireAndExplosion" disabled={false}
                                onChange={handleInputChange}/>
