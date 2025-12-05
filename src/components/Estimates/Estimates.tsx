@@ -32,7 +32,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
 
     const [estimates, setEstimates] = useState<FormDefinitionEstimates>(defaultEstimates);
 
-    const updateEstimatesData = (name: string, value: Number) => {
+    const updateEstimatesData = (name: string, value: number) => {
         setEstimates((prevData) => ({
             ...prevData,
             [name]: value,
@@ -74,9 +74,12 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         const budgetCheck = isValid(inputData.budget);
 
         if (agencyCheck && budgetCheck) {
-            const agencyAmountWithoutIVA = inputData.agencyRate.value * inputData.budget.value / 100;
+            const agencyAmountWithoutIVA = inputData.agencyRate.unit === 'percentage'
+                ? inputData.agencyRate.value * inputData.budget.value / 100
+                :  parseFloat(String(inputData.agencyRate.value));
+
             const iva = 0.22 * agencyAmountWithoutIVA;
-            updateEstimatesData("agencyEstimate", parseFloat((agencyAmountWithoutIVA + iva).toFixed(2)));
+            updateEstimatesData("agencyEstimate", Number((agencyAmountWithoutIVA + iva).toFixed(2)));
         } else {
             updateEstimatesData("agencyEstimate", 0);
         }
@@ -103,8 +106,11 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         const bankAssessmentCheck: boolean = isValid(inputData.bankAssessment);
 
         if (mortgageCheck && budgetCheck && bankAssessmentCheck) {
-            const value = (inputData.bankAssessment.value * (inputData.budget.value * inputData.mortgage.value / 100)) / 100;
-            updateEstimatesData("bankAssessmentEstimate", value)
+            debugger;
+            const value: number = inputData.bankAssessment.unit === 'percentage'
+                ? (inputData.bankAssessment.value * (inputData.budget.value * inputData.mortgage.value / 100)) / 100
+                : inputData.bankAssessment.value;
+            updateEstimatesData("bankAssessmentEstimate", parseFloat(String(value)))
         } else {
             updateEstimatesData("bankAssessmentEstimate", 0);
         }
@@ -171,9 +177,8 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         [inputData.monthlyRate, inputData.numberOfInstallments, inputData.mortgage, inputData.budget])
 
     const getInitialInvestment = (): number => {
-        if (inputData.budget.value && inputData.budget.value > 0) {
+        if (inputData.budget.value && parseFloat(String(inputData.budget.value)) > 0) {
             return Object.values(estimates)
-                .map(v => v.value)
                 .map(v => parseFloat(v))
                 .filter(v => !isNaN(v))
                 .reduce((accumulator, currentValue) => accumulator + currentValue, 0)

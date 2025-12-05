@@ -3,8 +3,8 @@
   "configuration": {
     "title": "Configuration Parameters",
     "realEstateAgency": {
-      "label": "Agency (%)",
-      "placeholder": "Enter percentage"
+      "label": "Agency",
+      "placeholder": "Enter real estate quote"
     },
     "mortgage": {
       "label": "Mortgage (%)",

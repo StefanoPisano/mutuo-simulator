@@ -53,13 +53,15 @@ const Dashboard: React.FC = () => {
 
     const handleCheckboxChange = (value: boolean, name: string) => {
         switch (name) {
-            case 'bankAssessment': {
-                updateFormData("bankAssessment", {value: 0, unit: value ? 'currency' : 'percentage', isValid : true})
+            case 'bankAssessment':
+            case 'agencyRate':
+            {
+                updateFormData(name, {value: 0, unit: value ? 'currency' : 'percentage', isValid : true})
             }
         }
     }
 
-    const handleValidation = (value: number, name: string): EventResponse => {
+    const handleValidation = (value: number, name: FormDataKeys): EventResponse => {
         switch (formData[name].unit) {
             case 'percentage': {
                 return isNaN(value) || value > 100 || value < 0 ? {
@@ -110,7 +112,10 @@ const Dashboard: React.FC = () => {
 
                 <Card title={t("configuration.title")}>
                     <div className="flex gap-2">
-                        <Input label={t("configuration.realEstateAgency.label")} symbol={"%"}
+                        <Checkbox label={"Fixed Rate"}
+                                  checked={formData.agencyRate.unit === 'currency'} name={"agencyRate"} disabled={false}
+                                  onChange={handleCheckboxChange}/>
+                        <Input label={t("configuration.realEstateAgency.label")} symbol={formData.agencyRate.unit === 'currency' ? formData.currency.value : '%'}
                                placeholder={t("configuration.realEstateAgency.placeholder")} inputType="text"
                                value={formData.agencyRate} name={"agencyRate"} disabled={false}
                                onChange={handleInputChange}/>
@@ -130,8 +135,7 @@ const Dashboard: React.FC = () => {
                                value={formData.mortgageDuration} name={"mortgageDuration"} disabled={false}
                                onChange={handleInputChange}/>
                     </div>
-                    <div className="flex flex-auto gap-5 items-center">
-
+                    <div className="flex flex-auto gap-5">
                         <Checkbox label={"Fixed Rate"}
                                   checked={formData.bankAssessment.unit === 'currency'} name={"bankAssessment"} disabled={false}
                                   onChange={handleCheckboxChange}/>

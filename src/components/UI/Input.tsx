@@ -41,7 +41,7 @@ const Input: React.FC<InputProps> = ({
             <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={label}>
                 {label}
             </label>
-            <div className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md"}>
+            <div className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md h-10"}>
                 {symbol && <span className={"flex justify-center w-10"}>{
                             symbol === "%" ? <Percent fontSize={"small"}/>
                   :   <MoneyIcon fontSize={"small"}/>

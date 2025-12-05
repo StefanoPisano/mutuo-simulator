@@ -3,8 +3,8 @@
   "configuration": {
     "title": "Parametri",
   "realEstateAgency": {
-    "label": "Agenzia (%)",
-    "placeholder": "Inserisci percentuale"
+    "label": "Agenzia",
+    "placeholder": "Inserisci richiesta agenzia"
   },
   "mortgage": {
     "label": "Mutuo (%)",
