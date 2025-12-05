@@ -7,27 +7,30 @@ import type {FormDefinition} from "../interfaces/FormDefinition.ts";
 import Estimates from "../Estimates/Estimates.tsx";
 import type {EventResponse} from "../interfaces/EventResponse.ts";
 import type {FormField} from "../interfaces/FormField.ts";
+import Checkbox from "@Components/UI/Checkbox.tsx";
 
 
 const Dashboard: React.FC = () => {
     const {t} = useTranslation();
+
+    type FormDataKeys = keyof FormDefinition;
     const defaultFormData: FormDefinition = {
-        agencyRate: {isValid: true, value: 4},
-        bankRate: {isValid: true, value: 3.2},
-        monthlyRate: {isValid: true, value: 0},
-        numberOfInstallments: {isValid: true, value: 360},
-        mortgageDuration: {isValid: true, value: 30},
-        budget: {isValid: true, value: 0},
-        mortgage: {isValid: true, value: 80},
-        bankAssessment: {isValid: true, value: 1},
-        appraisal: {isValid: true, value: 350},
-        substituteTax: {isValid: true, value: 0.25},
-        fireAndExplosion: {isValid: true, value: 2177},
-        tcmPolicy: {isValid: true, value: 0},
-        notary: {isValid: true, value: 5000},
-        extra: {isValid: true, value: 0},
-        broker: {isValid: true, value: 1},
-        currency: {isValid: true, value: "€"}
+        agencyRate: {isValid: true, value: 4, unit: "percentage"},
+        bankRate: {isValid: true, value: 3.2, unit: "percentage"},
+        monthlyRate: {isValid: true, value: 0, unit: "percentage"},
+        numberOfInstallments: {isValid: true, value: 360, unit: "total"},
+        mortgageDuration: {isValid: true, value: 30, unit: "duration"},
+        budget: {isValid: true, value: 0, unit: "currency"},
+        mortgage: {isValid: true, value: 80, unit: "percentage"},
+        bankAssessment: {isValid: true, value: 1, unit: "percentage"},
+        appraisal: {isValid: true, value: 350, unit: "percentage"},
+        substituteTax: {isValid: true, value: 0.25, unit: "percentage"},
+        fireAndExplosion: {isValid: true, value: 2177, unit: "currency"},
+        tcmPolicy: {isValid: true, value: 0, unit: "currency"},
+        notary: {isValid: true, value: 5000, unit: "currency"},
+        extra: {isValid: true, value: 0, unit: "currency"},
+        broker: {isValid: true, value: 1, unit: "percentage"},
+        currency: {isValid: true, value: "€", unit: "none"}
     };
 
 
@@ -40,22 +43,25 @@ const Dashboard: React.FC = () => {
         }))
     }
 
-    const handleInputChange = (value: number, name: string): EventResponse => {
+    const handleInputChange = (value: number, name: FormDataKeys): EventResponse => {
         const response = handleValidation(value, name);
 
-        updateFormData(name, {isValid: !response.hasError, value: value});
+        updateFormData(name, {isValid: !response.hasError, value: value, unit: formData[name].unit});
 
         return response;
     }
 
-    const handleValidation = (value: number, name: string): EventResponse => {
+    const handleCheckboxChange = (value: boolean, name: string) => {
         switch (name) {
-            case 'agencyRate':
-            case 'monthlyRate':
-            case 'bankRate':
-            case 'bankAssessment':
-            case 'mortgage':
-            case 'broker': {
+            case 'bankAssessment': {
+                updateFormData("bankAssessment", {value: 0, unit: value ? 'currency' : 'percentage', isValid : true})
+            }
+        }
+    }
+
+    const handleValidation = (value: number, name: string): EventResponse => {
+        switch (formData[name].unit) {
+            case 'percentage': {
                 return isNaN(value) || value > 100 || value < 0 ? {
                     hasError: true,
                     msg: 'Invalid percentage'
@@ -73,15 +79,15 @@ const Dashboard: React.FC = () => {
     // Effects
     useEffect(() => {
         const rate = calculateMonthlyRate(formData.bankRate.value);
-        updateFormData("monthlyRate", {isValid: true, value: rate});
+        updateFormData("monthlyRate", {isValid: true, value: rate, unit: formData.bankRate.unit});
     }, [formData.bankRate]);
 
     useEffect(() => {
         if (formData.mortgageDuration.isValid) {
             const installments = calculateMortgageInstallments(formData.mortgageDuration.value);
-            updateFormData("numberOfInstallments", {isValid: true, value: installments});
+            updateFormData("numberOfInstallments", {isValid: true, value: installments, unit: formData.mortgageDuration.unit});
         } else {
-            updateFormData("numberOfInstallments", {isValid: false, value: "-"});
+            updateFormData("numberOfInstallments", {isValid: false, value: 0, unit: formData.mortgageDuration.unit});
         }
     }, [formData.mortgageDuration]);
 
@@ -124,11 +130,17 @@ const Dashboard: React.FC = () => {
                                value={formData.mortgageDuration} name={"mortgageDuration"} disabled={false}
                                onChange={handleInputChange}/>
                     </div>
-                    <div className="flex flex-auto gap-2">
-                        <Input label={t("configuration.bankAssessment.label")} symbol={"%"}
+                    <div className="flex flex-auto gap-5 items-center">
+
+                        <Checkbox label={"Fixed Rate"}
+                                  checked={formData.bankAssessment.unit === 'currency'} name={"bankAssessment"} disabled={false}
+                                  onChange={handleCheckboxChange}/>
+                        <Input label={t("configuration.bankAssessment.label")} symbol={formData.bankAssessment.unit === 'currency' ? formData.currency.value : '%'}
                                placeholder={t("configuration.bankAssessment.placeholder")} inputType="text"
                                value={formData.bankAssessment} name={"bankAssessment"} disabled={false}
                                onChange={handleInputChange}/>
+                    </div>
+                    <div className="flex flex-auto gap-2">
                         <Input label={t("configuration.appraisal.label")}
                                placeholder={t("configuration.appraisal.placeholder")} symbol={formData.currency.value}
                                inputType="text" value={formData.appraisal} name={"appraisal"}

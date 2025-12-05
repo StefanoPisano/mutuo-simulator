@@ -13,7 +13,7 @@ interface InputProps {
     inputType: string,
     disabled?: boolean,
     value: FormField<any>,
-    onChange?: (value: any, name: string) => EventResponse,
+    onChange?: (value: any, name: any) => EventResponse,
 }
 
 const Input: React.FC<InputProps> = ({

@@ -31,8 +31,8 @@
       "placeholder": "Enter broker percentage"
     },
     "bankAssessment": {
-      "label": "Bank Assessment (%)",
-      "placeholder": "Enter bank assessment percentage"
+      "label": "Bank Assessment",
+      "placeholder": "Enter bank assessment"
     },
     "appraisal": {
       "label": "Appraisal",

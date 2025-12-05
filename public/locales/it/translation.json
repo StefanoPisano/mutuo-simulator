@@ -31,8 +31,8 @@
     "placeholder": "Inserisci percentuale del broker"
   },
   "bankAssessment": {
-    "label": "Istruttoria (%)",
-    "placeholder": "Inserisci percentuale di istruttoria"
+    "label": "Istruttoria",
+    "placeholder": "Inserisci istruttoria"
   },
   "appraisal": {
     "label": "Perizia",
