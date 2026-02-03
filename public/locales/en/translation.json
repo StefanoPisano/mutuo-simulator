@@ -7,7 +7,7 @@
       "placeholder": "Enter real estate quote"
     },
     "mortgage": {
-      "label": "Mortgage (%)",
+      "label": "Mortgage",
       "placeholder": "Enter percentage"
     },
     "notary": {
@@ -27,7 +27,7 @@
       "placeholder": "Enter extra details"
     },
     "broker": {
-      "label": "Broker (%)",
+      "label": "Broker",
       "placeholder": "Enter broker percentage"
     },
     "bankAssessment": {
@@ -39,7 +39,7 @@
       "placeholder": "Enter appraisal details"
     },
     "substituteTax": {
-      "label": "Substitute Tax (%)",
+      "label": "Substitute Tax",
       "placeholder": "Enter percentage"
     },
     "fireAndExplosion": {

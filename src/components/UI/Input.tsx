@@ -10,7 +10,10 @@ interface InputProps {
     name: string,
     symbol?: string,
     placeholder: string,
-    inputType: string,
+    inputType?: string,
+    inputStep?: number,
+    min?: number,
+    max?: number,
     disabled?: boolean,
     value: FormField<any>,
     onChange?: (value: any, name: any) => EventResponse,
@@ -22,11 +25,14 @@ const Input: React.FC<InputProps> = ({
                                          symbol,
                                          placeholder,
                                          inputType,
+                                         inputStep = 1,
                                          disabled = false,
+                                         min,
+                                         max,
                                          value,
                                          onChange
                                      }) => {
-    const [inputStatus, setInputStatus] = useState<EventResponse>({ hasError: false});
+    const [inputStatus, setInputStatus] = useState<EventResponse>({hasError: false});
 
     const change = (event: ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
@@ -41,21 +47,27 @@ const Input: React.FC<InputProps> = ({
             <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={label}>
                 {label}
             </label>
-            <div className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md h-10"}>
-                {symbol && <span className={"flex justify-center w-10"}>{
-                            symbol === "%" ? <Percent fontSize={"small"}/>
-                  :   <MoneyIcon fontSize={"small"}/>
+            <div
+                className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md h-10"}>
+                {symbol && <span className={"flex justify-center w-12"}>{
+                    inputType === 'range' ? value.value
+                        : symbol === "%" ? <Percent fontSize={"small"}/>
+                            : <MoneyIcon fontSize={"small"}/>
                 }</span>}
-                <input
-                    type={inputType}
-                    id={label}
-                    placeholder={placeholder}
-                    disabled={disabled}
-                    value={value.value}
-                    onChange={change}
-                    className="
+                {
+                    inputType === 'range' ?
+                        <input
+                            type={inputType}
+                            id={label}
+                            step={inputStep}
+                            disabled={disabled}
+                            value={value.value}
+                            min={min}
+                            max={max}
+                            onChange={change}
+                            className="
           block
-          w-full
+          w-28
           p-2
           border border-gray-300
           rounded-md
@@ -66,11 +78,35 @@ const Input: React.FC<InputProps> = ({
           placeholder:text-xs
           placeholder:italic
         "
-                />
+                        />
+                        : <input
+                            type={inputType}
+                            id={label}
+                            placeholder={placeholder}
+                            disabled={disabled}
+                            value={value.value}
+                            onChange={change}
+                            className="
+          block
+          w-36
+          p-2
+          border border-gray-300
+          rounded-md
+          focus:outline-none
+          focus:ring-2
+          focus:ring-yimin-blue-500
+          focus:border-yimin-blue-500
+          placeholder:text-xs
+          placeholder:italic
+        "
+                        />
+                }
+
             </div>
             {
                 inputStatus.hasError &&
-                <div className={"text-xs m-1 p-1 border-gray-300 bg-antiflash-white rounded-md text-chocolate-cosmos font-bold"}>{inputStatus.msg}</div>
+                <div
+                    className={"text-xs m-1 p-1 border-gray-300 bg-antiflash-white rounded-md text-chocolate-cosmos font-bold"}>{inputStatus.msg}</div>
 
             }
         </div>

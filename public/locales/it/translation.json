@@ -7,7 +7,7 @@
     "placeholder": "Inserisci richiesta agenzia"
   },
   "mortgage": {
-    "label": "Mutuo (%)",
+    "label": "Mutuo",
     "placeholder": "Inserisci percentuale"
   },
   "notary": {
@@ -27,7 +27,7 @@
     "placeholder": "Inserisci dettagli extra"
   },
   "broker": {
-    "label": "Broker (%)",
+    "label": "Broker",
     "placeholder": "Inserisci percentuale del broker"
   },
   "bankAssessment": {
@@ -39,7 +39,7 @@
     "placeholder": "Inserisci dettagli perizia"
   },
   "substituteTax": {
-    "label": "Imposta Sostitutiva (%)",
+    "label": "Imposta Sostitutiva",
     "placeholder": "Inserisci percentuale"
   },
   "fireAndExplosion": {

@@ -7,6 +7,7 @@ import type {FormField} from "../interfaces/FormField.ts";
 import type {FormDefinition} from "../interfaces/FormDefinition.ts";
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Payments from "@mui/icons-material/Payments";
 
 interface Props {
     inputData: FormDefinition
@@ -106,7 +107,6 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         const bankAssessmentCheck: boolean = isValid(inputData.bankAssessment);
 
         if (mortgageCheck && budgetCheck && bankAssessmentCheck) {
-            debugger;
             const value: number = inputData.bankAssessment.unit === 'percentage'
                 ? (inputData.bankAssessment.value * (inputData.budget.value * inputData.mortgage.value / 100)) / 100
                 : inputData.bankAssessment.value;
@@ -138,8 +138,11 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         const brokerCheck: boolean = isValid(inputData.broker);
 
         if (mortgageCheck && budgetCheck && brokerCheck) {
-            const value = (inputData.broker.value * (inputData.budget.value * inputData.mortgage.value / 100)) / 100;
-            updateEstimatesData("brokerEstimate", value)
+            const value = inputData.broker.unit === 'percentage'
+                ? (inputData.broker.value * (inputData.budget.value * inputData.mortgage.value / 100)) / 100
+                :  inputData.broker.value;
+
+            updateEstimatesData("brokerEstimate", parseFloat(String(value)))
         } else {
             updateEstimatesData("brokerEstimate", 0);
         }
@@ -149,7 +152,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
     useEffect(() => {
         const notaryCheck: boolean = isValid(inputData.notary);
         if (notaryCheck) {
-            updateEstimatesData("notaryEstimate", inputData.notary.value)
+            updateEstimatesData("notaryEstimate", parseFloat(String(inputData.notary.value)))
         } else {
             updateEstimatesData("notaryEstimate", 0);
         }
@@ -232,7 +235,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
                              className={"flex flex-col bg-yimin-blue text-center font-bold w-1/6 rounded-xl p-2 items-center"}>
                             <span className={"text-antiflash-white text-xs"}>{t(`estimate.${label}`)}</span>
                             <div className={"text-coral italic text-xl"}>
-                                {estimates[key].toFixed(2)} {inputData.currency.value}
+                                {estimates[key].toFixed(2)} <Payments />
                             </div>
                         </div>
                     ))}
@@ -246,7 +249,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
                             <span
                                 className={"text-antiflash-white text-2xl"}>{t("estimate.initialInvestment.label")}</span>
                             <div
-                                className={"text-coral italic text-3xl"}>{initialInvestment.toFixed(2)} {inputData.currency.value}</div>
+                                className={"text-coral italic text-3xl"}>~ {initialInvestment.toFixed(2)} <Payments fontSize={"large"}/></div>
                         </div>
                         <div className={"basis-1/5"}></div>
                     </div>
@@ -257,7 +260,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
                             <span
                                 className={"text-antiflash-white text-2xl"}>{t("estimate.mortgagePayment.label")}</span>
                             <div
-                                className={"text-coral italic text-3xl"}>{mortgagePaymentEstimate.toFixed(2)} {inputData.currency.value}</div>
+                                className={"text-coral italic text-3xl"}>~ {mortgagePaymentEstimate.toFixed(2)} <Payments fontSize={"large"}/></div>
                         </div>
                         <div className={"basis-1/5"}></div>
                     </div>
