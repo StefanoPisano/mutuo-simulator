@@ -1,7 +1,7 @@
 import * as React from "react";
-import {type ChangeEvent, useState} from "react";
-import type {EventResponse} from "../interfaces/EventResponse.ts";
-import type {FormField} from "../interfaces/FormField.ts";
+import { type ChangeEvent, useState } from "react";
+import type { EventResponse } from "../interfaces/EventResponse.ts";
+import type { FormField } from "../interfaces/FormField.ts";
 import MoneyIcon from '@mui/icons-material/Money';
 import Percent from '@mui/icons-material/Percent';
 
@@ -20,19 +20,19 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
-                                         label,
-                                         name,
-                                         symbol,
-                                         placeholder,
-                                         inputType,
-                                         inputStep = 1,
-                                         disabled = false,
-                                         min,
-                                         max,
-                                         value,
-                                         onChange
-                                     }) => {
-    const [inputStatus, setInputStatus] = useState<EventResponse>({hasError: false});
+    label,
+    name,
+    symbol,
+    placeholder,
+    inputType,
+    inputStep = 1,
+    disabled = false,
+    min,
+    max,
+    value,
+    onChange
+}) => {
+    const [inputStatus, setInputStatus] = useState<EventResponse>({ hasError: false });
 
     const change = (event: ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
@@ -51,8 +51,8 @@ const Input: React.FC<InputProps> = ({
                 className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md h-10"}>
                 {symbol && <span className={"flex justify-center w-12"}>{
                     inputType === 'range' ? value.value
-                        : symbol === "%" ? <Percent fontSize={"small"}/>
-                            : <MoneyIcon fontSize={"small"}/>
+                        : symbol === "%" ? <Percent fontSize={"small"} />
+                            : <MoneyIcon fontSize={"small"} />
                 }</span>}
                 {
                     inputType === 'range' ?
@@ -67,7 +67,7 @@ const Input: React.FC<InputProps> = ({
                             onChange={change}
                             className="
           block
-          w-28
+          w-full
           p-2
           border border-gray-300
           rounded-md
@@ -88,7 +88,8 @@ const Input: React.FC<InputProps> = ({
                             onChange={change}
                             className="
           block
-          w-36
+          w-full
+          md:w-36
           p-2
           border border-gray-300
           rounded-md

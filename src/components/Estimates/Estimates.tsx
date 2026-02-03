@@ -1,10 +1,10 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Card from "../UI/Card.tsx";
-import {useTranslation} from "react-i18next";
-import type {FormDefinitionEstimates} from "../interfaces/FormDefinitionEstimates.ts";
-import type {FormField} from "../interfaces/FormField.ts";
-import type {FormDefinition} from "../interfaces/FormDefinition.ts";
+import { useTranslation } from "react-i18next";
+import type { FormDefinitionEstimates } from "../interfaces/FormDefinitionEstimates.ts";
+import type { FormField } from "../interfaces/FormField.ts";
+import type { FormDefinition } from "../interfaces/FormDefinition.ts";
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Payments from "@mui/icons-material/Payments";
@@ -14,8 +14,8 @@ interface Props {
 }
 
 
-const Estimates: React.FC<Props> = ({inputData}) => {
-    const {t} = useTranslation();
+const Estimates: React.FC<Props> = ({ inputData }) => {
+    const { t } = useTranslation();
 
 
     const defaultEstimates: FormDefinitionEstimates = {
@@ -77,7 +77,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         if (agencyCheck && budgetCheck) {
             const agencyAmountWithoutIVA = inputData.agencyRate.unit === 'percentage'
                 ? inputData.agencyRate.value * inputData.budget.value / 100
-                :  parseFloat(String(inputData.agencyRate.value));
+                : parseFloat(String(inputData.agencyRate.value));
 
             const iva = 0.22 * agencyAmountWithoutIVA;
             updateEstimatesData("agencyEstimate", Number((agencyAmountWithoutIVA + iva).toFixed(2)));
@@ -140,7 +140,7 @@ const Estimates: React.FC<Props> = ({inputData}) => {
         if (mortgageCheck && budgetCheck && brokerCheck) {
             const value = inputData.broker.unit === 'percentage'
                 ? (inputData.broker.value * (inputData.budget.value * inputData.mortgage.value / 100)) / 100
-                :  inputData.broker.value;
+                : inputData.broker.value;
 
             updateEstimatesData("brokerEstimate", parseFloat(String(value)))
         } else {
@@ -161,22 +161,22 @@ const Estimates: React.FC<Props> = ({inputData}) => {
 
 
     useEffect(() => {
-            const monthlyRateCheck: boolean = isValid(inputData.monthlyRate);
-            const budgetCheck: boolean = isValid(inputData.budget);
-            const numberOfInstallmentsCheck: boolean = isValid(inputData.numberOfInstallments);
-            const mortgageCheck: boolean = isValid(inputData.mortgage);
+        const monthlyRateCheck: boolean = isValid(inputData.monthlyRate);
+        const budgetCheck: boolean = isValid(inputData.budget);
+        const numberOfInstallmentsCheck: boolean = isValid(inputData.numberOfInstallments);
+        const mortgageCheck: boolean = isValid(inputData.mortgage);
 
-            if (monthlyRateCheck && budgetCheck && numberOfInstallmentsCheck && mortgageCheck) {
-                const value = (inputData.budget.value - getMortgageDepositEstimate(inputData.budget.value, inputData.mortgage.value)) * (inputData.monthlyRate.value *
-                    (Math.pow(1 + inputData.monthlyRate.value, inputData.numberOfInstallments.value)) /
-                    (Math.pow(1 + inputData.monthlyRate.value, inputData.numberOfInstallments.value) - 1))
+        if (monthlyRateCheck && budgetCheck && numberOfInstallmentsCheck && mortgageCheck) {
+            const value = (inputData.budget.value - getMortgageDepositEstimate(inputData.budget.value, inputData.mortgage.value)) * (inputData.monthlyRate.value *
+                (Math.pow(1 + inputData.monthlyRate.value, inputData.numberOfInstallments.value)) /
+                (Math.pow(1 + inputData.monthlyRate.value, inputData.numberOfInstallments.value) - 1))
 
-                setMortgagePaymentEstimate(parseFloat(value.toFixed(2)))
-            } else {
-                setMortgagePaymentEstimate(0)
-            }
+            setMortgagePaymentEstimate(parseFloat(value.toFixed(2)))
+        } else {
+            setMortgagePaymentEstimate(0)
+        }
 
-        },
+    },
         [inputData.monthlyRate, inputData.numberOfInstallments, inputData.mortgage, inputData.budget])
 
     const getInitialInvestment = (): number => {
@@ -229,38 +229,37 @@ const Estimates: React.FC<Props> = ({inputData}) => {
     return (
         <>
             <Card title={t("estimate.title")}>
-                <div className={"flex flex-auto gap-5 mt-10 justify-center"}>
-                    {estimatesData.map(({key, label}) => (
+                <div className={"flex flex-row flex-wrap lg:grid lg:grid-cols-6 gap-5 mt-10 justify-center"}>
+                    {estimatesData.map(({ key, label }) => (
                         <div key={key}
-                             className={"flex flex-col bg-yimin-blue text-center font-bold w-1/6 rounded-xl p-2 items-center"}>
+                            className={"flex flex-col bg-yimin-blue text-center font-bold w-full lg:w-auto rounded-xl p-2 items-center"}>
                             <span className={"text-antiflash-white text-xs"}>{t(`estimate.${label}`)}</span>
                             <div className={"text-coral italic text-xl"}>
                                 {estimates[key].toFixed(2)} <Payments />
                             </div>
                         </div>
                     ))}
-
                 </div>
 
-                <div className={"flex flex-auto gap-10 mt-20 justify-center"}>
-                    <div className={"flex bg-yimin-blue text-center font-bold w-2/5 rounded-xl p-2 items-center"}>
-                        <div className={"basis-1/5 text-antiflash-white"}><ShoppingCart fontSize={"large"}/></div>
+                <div className={"flex flex-col md:flex-row flex-auto gap-10 mt-20 justify-center"}>
+                    <div className={"flex bg-yimin-blue text-center font-bold w-full md:w-2/5 rounded-xl p-2 items-center"}>
+                        <div className={"basis-1/5 text-antiflash-white"}><ShoppingCart fontSize={"large"} /></div>
                         <div className={"basis-3/5"}>
                             <span
                                 className={"text-antiflash-white text-2xl"}>{t("estimate.initialInvestment.label")}</span>
                             <div
-                                className={"text-coral italic text-3xl"}>~ {initialInvestment.toFixed(2)} <Payments fontSize={"large"}/></div>
+                                className={"text-coral italic text-3xl"}>~ {initialInvestment.toFixed(2)} <Payments fontSize={"large"} /></div>
                         </div>
                         <div className={"basis-1/5"}></div>
                     </div>
 
-                    <div className={"flex bg-yimin-blue text-center font-bold w-2/5 rounded-xl p-2 items-center "}>
-                        <div className={"basis-1/5 text-antiflash-white"}><AccountBalanceIcon fontSize={"large"}/></div>
+                    <div className={"flex bg-yimin-blue text-center font-bold w-full md:w-2/5 rounded-xl p-2 items-center "}>
+                        <div className={"basis-1/5 text-antiflash-white"}><AccountBalanceIcon fontSize={"large"} /></div>
                         <div className={"basis-3/5"}>
                             <span
                                 className={"text-antiflash-white text-2xl"}>{t("estimate.mortgagePayment.label")}</span>
                             <div
-                                className={"text-coral italic text-3xl"}>~ {mortgagePaymentEstimate.toFixed(2)} <Payments fontSize={"large"}/></div>
+                                className={"text-coral italic text-3xl"}>~ {mortgagePaymentEstimate.toFixed(2)} <Payments fontSize={"large"} /></div>
                         </div>
                         <div className={"basis-1/5"}></div>
                     </div>

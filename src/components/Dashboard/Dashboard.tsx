@@ -1,36 +1,36 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Card from "../UI/Card.tsx";
 import Input from "../UI/Input.tsx";
-import {useTranslation} from "react-i18next";
-import type {FormDefinition} from "../interfaces/FormDefinition.ts";
+import { useTranslation } from "react-i18next";
+import type { FormDefinition } from "../interfaces/FormDefinition.ts";
 import Estimates from "../Estimates/Estimates.tsx";
-import type {EventResponse} from "../interfaces/EventResponse.ts";
-import type {FormField} from "../interfaces/FormField.ts";
+import type { EventResponse } from "../interfaces/EventResponse.ts";
+import type { FormField } from "../interfaces/FormField.ts";
 import Checkbox from "@Components/UI/Checkbox.tsx";
 
 
 const Dashboard: React.FC = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     type FormDataKeys = keyof FormDefinition;
     const defaultFormData: FormDefinition = {
-        agencyRate: {isValid: true, value: 4, unit: "percentage"},
-        bankRate: {isValid: true, value: 3.20, unit: "percentage"},
-        monthlyRate: {isValid: true, value: 0, unit: "percentage"},
-        numberOfInstallments: {isValid: true, value: 360, unit: "total"},
-        mortgageDuration: {isValid: true, value: 30, unit: "duration"},
-        budget: {isValid: true, value: 0, unit: "currency"},
-        mortgage: {isValid: true, value: 80, unit: "percentage"},
-        bankAssessment: {isValid: true, value: 1, unit: "percentage"},
-        appraisal: {isValid: true, value: 350, unit: "percentage"},
-        substituteTax: {isValid: true, value: 0.25, unit: "percentage"},
-        fireAndExplosion: {isValid: true, value: 2177, unit: "currency"},
-        tcmPolicy: {isValid: true, value: 0, unit: "currency"},
-        notary: {isValid: true, value: 5000, unit: "currency"},
-        extra: {isValid: true, value: 0, unit: "currency"},
-        broker: {isValid: true, value: 0, unit: "percentage"},
-        currency: {isValid: true, value: "€", unit: "none"}
+        agencyRate: { isValid: true, value: 4, unit: "percentage" },
+        bankRate: { isValid: true, value: 3.20, unit: "percentage" },
+        monthlyRate: { isValid: true, value: 0, unit: "percentage" },
+        numberOfInstallments: { isValid: true, value: 360, unit: "total" },
+        mortgageDuration: { isValid: true, value: 30, unit: "duration" },
+        budget: { isValid: true, value: 0, unit: "currency" },
+        mortgage: { isValid: true, value: 80, unit: "percentage" },
+        bankAssessment: { isValid: true, value: 1, unit: "percentage" },
+        appraisal: { isValid: true, value: 350, unit: "percentage" },
+        substituteTax: { isValid: true, value: 0.25, unit: "percentage" },
+        fireAndExplosion: { isValid: true, value: 2177, unit: "currency" },
+        tcmPolicy: { isValid: true, value: 0, unit: "currency" },
+        notary: { isValid: true, value: 5000, unit: "currency" },
+        extra: { isValid: true, value: 0, unit: "currency" },
+        broker: { isValid: true, value: 0, unit: "percentage" },
+        currency: { isValid: true, value: "€", unit: "none" }
     };
 
 
@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
     const handleInputChange = (value: number, name: FormDataKeys): EventResponse => {
         const response = handleValidation(value, name);
 
-        updateFormData(name, {isValid: !response.hasError, value: value, unit: formData[name].unit});
+        updateFormData(name, { isValid: !response.hasError, value: value, unit: formData[name].unit });
 
         return response;
     }
@@ -55,9 +55,8 @@ const Dashboard: React.FC = () => {
         switch (name) {
             case 'bankAssessment':
             case 'broker':
-            case 'agencyRate':
-            {
-                updateFormData(name, {value: 0, unit: value ? 'currency' : 'percentage', isValid : true})
+            case 'agencyRate': {
+                updateFormData(name, { value: 0, unit: value ? 'currency' : 'percentage', isValid: true })
             }
         }
     }
@@ -68,13 +67,13 @@ const Dashboard: React.FC = () => {
                 return isNaN(value) || value > 100 || value < 0 ? {
                     hasError: true,
                     msg: 'Invalid percentage'
-                } : {hasError: false}
+                } : { hasError: false }
             }
             default: {
                 return isNaN(value) || value < 0 ? {
                     hasError: true,
                     msg: 'Must be a number greater than 0'
-                } : {hasError: false}
+                } : { hasError: false }
             }
         }
     }
@@ -82,15 +81,19 @@ const Dashboard: React.FC = () => {
     // Effects
     useEffect(() => {
         const rate = calculateMonthlyRate(formData.bankRate.value);
-        updateFormData("monthlyRate", {isValid: true, value: rate, unit: formData.bankRate.unit});
+        updateFormData("monthlyRate", { isValid: true, value: rate, unit: formData.bankRate.unit });
     }, [formData.bankRate]);
 
     useEffect(() => {
         if (formData.mortgageDuration.isValid) {
             const installments = calculateMortgageInstallments(formData.mortgageDuration.value);
-            updateFormData("numberOfInstallments", {isValid: true, value: installments, unit: formData.mortgageDuration.unit});
+            updateFormData("numberOfInstallments", {
+                isValid: true,
+                value: installments,
+                unit: formData.mortgageDuration.unit
+            });
         } else {
-            updateFormData("numberOfInstallments", {isValid: false, value: 0, unit: formData.mortgageDuration.unit});
+            updateFormData("numberOfInstallments", { isValid: false, value: 0, unit: formData.mortgageDuration.unit });
         }
     }, [formData.mortgageDuration]);
 
@@ -100,105 +103,127 @@ const Dashboard: React.FC = () => {
 
 
     return (
-        <div className="w-full h-full flex flex-row gap-10">
-            <div className={"p-8 basis-full"}>
+        <div className="w-full h-full flex flex-col md:flex-row gap-4 md:gap-10">
+            <div className={"p-4 md:p-8 basis-full"}>
 
                 <Card title={t("budget.title")}>
                     <div className="flex gap-2">
                         <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")}
-                               symbol={formData.currency.value}
-                               inputType="text" value={formData.budget} name={"budget"} onChange={handleInputChange}/>
+                            symbol={formData.currency.value}
+                            inputType="text" value={formData.budget} name={"budget"} onChange={handleInputChange} />
                     </div>
                 </Card>
 
                 <Card title={t("configuration.title")}>
-                    <div className={"flex flex-row m-auto justify-center gap-2"}>
-                        <div className="flex gap-4 basis-1/3 p-1.5 br border rounded-xl border-gray-300">
-                            <Checkbox label={"Fixed Rate"}
-                                      checked={formData.agencyRate.unit === 'currency'} name={"agencyRate"} disabled={false}
-                                      onChange={handleCheckboxChange}/>
-                            <Input label={t("configuration.realEstateAgency.label")} symbol={formData.agencyRate.unit === 'currency' ? formData.currency.value : '%'}
-                                   placeholder={t("configuration.realEstateAgency.placeholder")} inputType="text"
-                                   value={formData.agencyRate} name={"agencyRate"} disabled={false}
-                                   onChange={handleInputChange}/>
-                            <Checkbox label={"Fixed Rate"}
-                                      checked={formData.broker.unit === 'currency'} name={"broker"} disabled={false}
-                                      onChange={handleCheckboxChange}/>
-                            <Input label={t("configuration.broker.label")}
-                                   placeholder={t("configuration.broker.placeholder")}
-                                   symbol={formData.broker.unit === 'currency' ? formData.currency.value : '%'}
-                                   inputType="text"
-                                   value={formData.broker} name={"broker"}
-                                   disabled={false} onChange={handleInputChange}/>
+                    <div className={"flex flex-col md:flex-row m-auto justify-center gap-4 md:gap-2"}>
+                        <div
+                            className="flex flex-col md:flex-row gap-4 basis-full md:basis-1/3 p-1.5 br border rounded-xl border-gray-300 items-center md:items-stretch">
+                            <div className="flex flex-row gap-2 w-full items-end justify-center">
+                                <Checkbox label={"Fixed Rate"}
+                                    checked={formData.agencyRate.unit === 'currency'} name={"agencyRate"}
+                                    disabled={false}
+                                    onChange={handleCheckboxChange} />
+                                <Input label={t("configuration.realEstateAgency.label")}
+                                    symbol={formData.agencyRate.unit === 'currency' ? formData.currency.value : '%'}
+                                    placeholder={t("configuration.realEstateAgency.placeholder")} inputType="text"
+                                    value={formData.agencyRate} name={"agencyRate"} disabled={false}
+                                    onChange={handleInputChange} />
+                            </div>
+                            <div className="flex flex-row gap-2 w-full items-end justify-center">
+                                <Checkbox label={"Fixed Rate"}
+                                    checked={formData.broker.unit === 'currency'} name={"broker"} disabled={false}
+                                    onChange={handleCheckboxChange} />
+                                <Input label={t("configuration.broker.label")}
+                                    placeholder={t("configuration.broker.placeholder")}
+                                    symbol={formData.broker.unit === 'currency' ? formData.currency.value : '%'}
+                                    inputType="text"
+                                    value={formData.broker} name={"broker"}
+                                    disabled={false} onChange={handleInputChange} />
+                            </div>
                         </div>
-                        <div className="flex gap-4 basis-1/3 p-1.5 justify-center border rounded-xl border-gray-300">
+                        <div
+                            className="flex flex-col md:flex-row gap-4 basis-full md:basis-1/3 p-1.5 justify-center border rounded-xl border-gray-300 items-center md:items-stretch">
                             <Input label={t("configuration.mortgage.label")}
-                                   placeholder={t("configuration.mortgage.placeholder")} symbol={"%"} inputType="range"
-                                   value={formData.mortgage} inputStep={1} min={0} max={100}
-                                   disabled={false} name={"mortgage"} onChange={handleInputChange}/>
+                                placeholder={t("configuration.mortgage.placeholder")} symbol={"%"} inputType="range"
+                                value={formData.mortgage} inputStep={1} min={0} max={100}
+                                disabled={false} name={"mortgage"} onChange={handleInputChange} />
 
                             <Input label={t("configuration.bankRate.label")}
-                                   placeholder={t("configuration.bankRate.placeholder")} symbol={"%"} inputType="range"
-                                   value={formData.bankRate} inputStep={0.01} min={0} max={10}
-                                   disabled={false} name={"bankRate"} onChange={handleInputChange}/>
+                                placeholder={t("configuration.bankRate.placeholder")} symbol={"%"} inputType="range"
+                                value={formData.bankRate} inputStep={0.01} min={0} max={10}
+                                disabled={false} name={"bankRate"} onChange={handleInputChange} />
 
                             <Input label={t("configuration.mortgageDuration.label")}
-                                   placeholder={t("configuration.mortgageDuration.placeholder")}  symbol={"Y"} inputType="range"
-                                   value={formData.mortgageDuration} inputStep={1} min={0} max={30}
-                                   name={"mortgageDuration"} disabled={false}
-                                   onChange={handleInputChange}/>
+                                placeholder={t("configuration.mortgageDuration.placeholder")} symbol={"Y"}
+                                inputType="range"
+                                value={formData.mortgageDuration} inputStep={1} min={0} max={30}
+                                name={"mortgageDuration"} disabled={false}
+                                onChange={handleInputChange} />
                         </div>
 
                     </div>
 
-                    <div className={"flex flex-row m-auto mt-4 mb-4 justify-center w-1/2"}>
-                        <div className="flex gap-4 p-1.5 border rounded-xl border-gray-300">
-                        <Checkbox label={"Fixed Rate"}
-                                  checked={formData.bankAssessment.unit === 'currency'} name={"bankAssessment"} disabled={false}
-                                  onChange={handleCheckboxChange}/>
-                        <Input label={t("configuration.bankAssessment.label")} symbol={formData.bankAssessment.unit === 'currency' ? formData.currency.value : '%'}
-                               placeholder={t("configuration.bankAssessment.placeholder")} inputType="text"
-                               value={formData.bankAssessment} name={"bankAssessment"} disabled={false}
-                               onChange={handleInputChange}/>
+                    <div className={"flex flex-col md:flex-row m-auto mt-4 mb-4 justify-center w-full md:w-fit"}>
+                        <div
+                            className="flex flex-col md:flex-row gap-4 p-1.5 border rounded-xl border-gray-300 items-center md:items-stretch w-full">
+                            <div className="flex flex-col md:flex-row gap-2 w-full items-center justify-center flex-wrap">
+                                <div className="flex flex-row gap-2 items-end">
+                                    <Checkbox label={"Fixed Rate"}
+                                        checked={formData.bankAssessment.unit === 'currency'}
+                                        name={"bankAssessment"}
+                                        disabled={false}
+                                        onChange={handleCheckboxChange} />
+                                    <Input label={t("configuration.bankAssessment.label")}
+                                        symbol={formData.bankAssessment.unit === 'currency' ? formData.currency.value : '%'}
+                                        placeholder={t("configuration.bankAssessment.placeholder")} inputType="text"
+                                        value={formData.bankAssessment} name={"bankAssessment"} disabled={false}
+                                        onChange={handleInputChange} />
+                                </div>
+                                <Input label={t("configuration.appraisal.label")}
+                                    placeholder={t("configuration.appraisal.placeholder")}
+                                    symbol={formData.currency.value}
+                                    inputType="text" value={formData.appraisal} name={"appraisal"}
+                                    disabled={false} onChange={handleInputChange} />
+                                <Input label={t("configuration.substituteTax.label")}
+                                    placeholder={t("configuration.substituteTax.placeholder")} symbol={"%"}
+                                    inputType="text"
+                                    value={formData.substituteTax} name={"substituteTax"} disabled={false}
+                                    onChange={handleInputChange} />
+                                <Input label={t("configuration.fireAndExplosion.label")}
+                                    placeholder={t("configuration.fireAndExplosion.placeholder")}
+                                    symbol={formData.currency.value}
+                                    inputType="text"
+                                    value={formData.fireAndExplosion} name="fireAndExplosion" disabled={false}
+                                    onChange={handleInputChange} />
+                                <Input label={t("configuration.tcmPolicy.label")}
+                                    placeholder={t("configuration.tcmPolicy.placeholder")}
+                                    symbol={formData.currency.value}
+                                    inputType="text" value={formData.tcmPolicy} name={"tcmPolicy"}
+                                    disabled={false} onChange={handleInputChange} />
+                            </div>
 
-                            <Input label={t("configuration.appraisal.label")}
-                                   placeholder={t("configuration.appraisal.placeholder")} symbol={formData.currency.value}
-                                   inputType="text" value={formData.appraisal} name={"appraisal"}
-                                   disabled={false} onChange={handleInputChange}/>
-                            <Input label={t("configuration.substituteTax.label")}
-                                   placeholder={t("configuration.substituteTax.placeholder")} symbol={"%"} inputType="text"
-                                   value={formData.substituteTax} name={"substituteTax"} disabled={false}
-                                   onChange={handleInputChange}/>
-                            <Input label={t("configuration.fireAndExplosion.label")}
-                                   placeholder={t("configuration.fireAndExplosion.placeholder")}
-                                   symbol={formData.currency.value}
-                                   inputType="text"
-                                   value={formData.fireAndExplosion} name="fireAndExplosion" disabled={false}
-                                   onChange={handleInputChange}/>
-                            <Input label={t("configuration.tcmPolicy.label")}
-                                   placeholder={t("configuration.tcmPolicy.placeholder")} symbol={formData.currency.value}
-                                   inputType="text" value={formData.tcmPolicy} name={"tcmPolicy"}
-                                   disabled={false} onChange={handleInputChange}/>
                         </div>
                     </div>
 
-                    <div className={"flex flex-row m-auto mt-4 mb-4 justify-center w-1/2 gap-4 "}>
-                        <div className="flex gap-4 basis-1/2 p-1.5 border rounded-xl border-gray-300"><Input
-                            label={t("configuration.notary.label")}
-                            placeholder={t("configuration.notary.placeholder")} symbol={formData.currency.value}
-                            inputType="text" value={formData.notary} name={"notary"}
-                            disabled={false} onChange={handleInputChange}/>
+                    <div className={"flex flex-col md:flex-row m-auto mt-4 mb-4 justify-center w-full md:w-1/2 gap-4 "}>
+                        <div
+                            className="flex flex-col md:flex-row gap-4 basis-full md:basis-1/2 p-1.5 border rounded-xl border-gray-300 items-center md:items-stretch">
+                            <Input
+                                label={t("configuration.notary.label")}
+                                placeholder={t("configuration.notary.placeholder")} symbol={formData.currency.value}
+                                inputType="text" value={formData.notary} name={"notary"}
+                                disabled={false} onChange={handleInputChange} />
                             <Input label={t("configuration.extra.label")}
-                                   placeholder={t("configuration.extra.placeholder")}
-                                   symbol={formData.currency.value}
-                                   inputType="text" value={formData.extra} name={"extra"} disabled={false}
-                                   onChange={handleInputChange}/>
+                                placeholder={t("configuration.extra.placeholder")}
+                                symbol={formData.currency.value}
+                                inputType="text" value={formData.extra} name={"extra"} disabled={false}
+                                onChange={handleInputChange} />
 
                         </div>
                     </div>
                 </Card>
 
-                <Estimates inputData={formData}/>
+                <Estimates inputData={formData} />
 
             </div>
         </div>
