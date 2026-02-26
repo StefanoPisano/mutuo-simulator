@@ -19,6 +19,12 @@ interface InputProps {
     onChange?: (value: any, name: any) => EventResponse,
 }
 
+const uuidv4 = () => {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+        (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    )
+}
+
 const Input: React.FC<InputProps> = ({
     label,
     name,
@@ -42,9 +48,13 @@ const Input: React.FC<InputProps> = ({
         }
     }
 
+
+
+    const id = label.replaceAll(" ", "").trim().concat(uuidv4());
+
     return (
         <div>
-            <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={label}>
+            <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={id}>
                 {label}
             </label>
             <div
@@ -58,7 +68,7 @@ const Input: React.FC<InputProps> = ({
                     inputType === 'range' ?
                         <input
                             type={inputType}
-                            id={label}
+                            id={id}
                             step={inputStep}
                             disabled={disabled}
                             value={value.value}
@@ -81,7 +91,7 @@ const Input: React.FC<InputProps> = ({
                         />
                         : <input
                             type={inputType}
-                            id={label}
+                            id={id}
                             placeholder={placeholder}
                             disabled={disabled}
                             value={value.value}

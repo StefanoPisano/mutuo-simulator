@@ -1,0 +1,96 @@
+{
+  "disclaimer": "I prezzi forniti dall'applicazione rappresentano solo una stima indicativa basata sugli input forniti dall'utente. Questa stima non costituisce un'offerta reale e non deve essere interpretata come un prezzo finale o vincolante per l'acquisto di una casa. I costi effettivi possono variare significativamente in base a fattori come il mercato immobiliare attuale, le condizioni specifiche dell'immobile, e altre variabili imprevedibili. Gli utenti sono invitati a consultare un professionista del settore immobiliare per ottenere informazioni più accurate e dettagliate riguardo ai costi.",
+  "configuration": {
+    "title": "Parametri",
+  "realEstateAgency": {
+    "label": "Agenzia",
+    "placeholder": "Inserisci richiesta agenzia"
+  },
+  "mortgage": {
+    "label": "Mutuo",
+    "placeholder": "Inserisci percentuale"
+  },
+  "notary": {
+    "label": "Notaio",
+    "placeholder": "Inserisci nome notaio"
+  },
+  "bankRate": {
+    "label": "Tasso Banca",
+    "placeholder": "Inserisci tasso"
+  },
+  "mortgageDuration": {
+    "label": "Durata Mutuo (Anni)",
+    "placeholder": "Inserisci durata in anni"
+  },
+  "extra": {
+    "label": "Extra",
+    "placeholder": "Inserisci dettagli extra"
+  },
+  "broker": {
+    "label": "Broker",
+    "placeholder": "Inserisci percentuale del broker"
+  },
+  "bankAssessment": {
+    "label": "Istruttoria",
+    "placeholder": "Inserisci istruttoria"
+  },
+  "appraisal": {
+    "label": "Perizia",
+    "placeholder": "Inserisci dettagli perizia"
+  },
+  "substituteTax": {
+    "label": "Imposta Sostitutiva",
+    "placeholder": "Inserisci percentuale"
+  },
+  "fireAndExplosion": {
+    "label": "Incendio+Scoppio",
+    "placeholder": "Inserisci copertura"
+  },
+  "tcmPolicy": {
+    "label": "Polizza TCM",
+    "placeholder": "Inserisci dettagli polizza"
+  }
+},
+  "budget": {
+    "title": "Budget",
+    "homePrice": {
+      "label": "Costo Casa",
+      "placeholder": "Inserisci costo casa"
+    }
+  },
+  "estimate": {
+    "title": "Stime",
+    "agency": {
+      "label": "Agenzia + IVA",
+      "placeholder": ""
+    },
+    "mortgageDeposit": {
+      "label": "Anticipo Mutuo",
+      "placeholder": ""
+    },
+    "bankAssessment": {
+      "label": "Istruttoria Banca",
+      "placeholder": ""
+    },
+    "substituteTax": {
+      "label": "Imposta Sostitutiva",
+      "placeholder": ""
+    },
+    "broker": {
+      "label": "Broker",
+      "placeholder": ""
+    },
+    "notary": {
+      "label": "Notaio",
+      "placeholder": ""
+    },
+    "initialInvestment": {
+      "label": "Investimento Iniziale",
+      "placeholder": ""
+    },
+    "mortgagePayment": {
+      "label": "Rata Mutuo",
+      "placeholder": ""
+    }
+  }
+}

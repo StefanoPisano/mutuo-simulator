@@ -15,7 +15,7 @@ interface Props {
 
 
 const Estimates: React.FC<Props> = ({ inputData }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['translation']);
 
 
     const defaultEstimates: FormDefinitionEstimates = {

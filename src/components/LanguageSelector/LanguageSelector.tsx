@@ -4,7 +4,6 @@ import {useState} from "react";
 
 const LanguageSelector: React.FC = () => {
     const {i18n} = useTranslation();
-
     const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.language);
 
     const handleChangeLanguage = (lang: string) => {

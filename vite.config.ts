@@ -1,9 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-
-import path from "path";
-
-
+import path from "path"
 
 export default defineConfig({
     plugins: [react()],
@@ -13,5 +10,18 @@ export default defineConfig({
             "@Pages": path.resolve(__dirname, "src/pages")
         }
     },
-
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    mui: [
+                        '@mui/material',
+                        '@mui/icons-material',
+                        '@emotion/react',
+                        '@emotion/styled'
+                    ]
+                }
+            }
+        }
+    }
 })
