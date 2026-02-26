@@ -1,0 +1,96 @@
+{
+  "disclaimer": "The prices provided by the application are only indicative estimates based on the user input. This estimate does not constitute a real offer and should not be interpreted as a final or binding price for the purchase of a home. Actual costs may vary significantly depending on factors such as current real estate market conditions, the specific characteristics of the property, and other unpredictable variables. Users are encouraged to consult a real estate professional for more accurate and detailed information about costs.",
+  "configuration": {
+    "title": "Configuration Parameters",
+    "realEstateAgency": {
+      "label": "Agency",
+      "placeholder": "Enter real estate quote"
+    },
+    "mortgage": {
+      "label": "Mortgage",
+      "placeholder": "Enter percentage"
+    },
+    "notary": {
+      "label": "Notary",
+      "placeholder": "Enter notary name"
+    },
+    "bankRate": {
+      "label": "Bank Rate",
+      "placeholder": "Enter rate"
+    },
+    "mortgageDuration": {
+      "label": "Mortgage Duration (Years)",
+      "placeholder": "Enter duration in years"
+    },
+    "extra": {
+      "label": "Extra",
+      "placeholder": "Enter extra details"
+    },
+    "broker": {
+      "label": "Broker",
+      "placeholder": "Enter broker percentage"
+    },
+    "bankAssessment": {
+      "label": "Bank Assessment",
+      "placeholder": "Enter bank assessment"
+    },
+    "appraisal": {
+      "label": "Appraisal",
+      "placeholder": "Enter appraisal details"
+    },
+    "substituteTax": {
+      "label": "Substitute Tax",
+      "placeholder": "Enter percentage"
+    },
+    "fireAndExplosion": {
+      "label": "Fire+Explosion",
+      "placeholder": "Enter coverage"
+    },
+    "tcmPolicy": {
+      "label": "TCM Policy",
+      "placeholder": "Enter policy details"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "homePrice": {
+      "label": "Home Price",
+      "placeholder": "Target home price"
+    }
+  },
+  "estimate": {
+    "title": "Estimates",
+    "agency": {
+      "label": "Real Estate + IVA",
+      "placeholder": ""
+    },
+    "mortgageDeposit": {
+      "label": "Mortgage Deposit",
+      "placeholder": ""
+    },
+    "bankAssessment": {
+      "label": "Bank Assessment",
+      "placeholder": ""
+    },
+    "substituteTax": {
+      "label": "Substitute Tax",
+      "placeholder": ""
+    },
+    "broker": {
+      "label": "Broker",
+      "placeholder": ""
+    },
+    "notary": {
+      "label": "Notary",
+      "placeholder": ""
+    },
+    "initialInvestment": {
+      "label": "Initial Investment",
+      "placeholder": ""
+    },
+    "mortgagePayment": {
+      "label": "Mortgage Payment",
+      "placeholder": ""
+    }
+  }
+}

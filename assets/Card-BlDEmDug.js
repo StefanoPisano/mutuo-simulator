@@ -1,0 +1,1 @@
+import{j as e}from"./mui-DEcKA50n.js";const i=({title:r,children:s})=>e.jsx(e.Fragment,{children:e.jsxs("div",{className:"pb-10",children:[r&&e.jsx("div",{className:"font-title text-xl text-yimin-blue border-b border-b-yimin-blue mb-2",children:r}),s]})});export{i as C};
