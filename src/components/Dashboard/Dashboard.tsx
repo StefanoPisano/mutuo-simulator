@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
             <div className={"p-4 md:p-8 basis-full"}>
 
                 <Card title={t("budget.title")}>
-                    <div className="flex justify-center gap-2">
+                    <div className="flex justify-center gap-2 w-full">
                         <Input label={t("budget.homePrice.label")} placeholder={t("budget.homePrice.placeholder")}
                             symbol={formData.currency.value}
                             inputType="text" value={formData.budget} name={"budget"} onChange={handleInputChange} />

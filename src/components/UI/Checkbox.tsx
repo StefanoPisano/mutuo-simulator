@@ -1,5 +1,6 @@
 import type {ChangeEvent} from "react";
 import * as React from "react";
+import id from "../../utils/id.ts";
 
 interface InputProps {
     label: string,
@@ -26,20 +27,18 @@ const Checkbox: React.FC<InputProps> = ({
 
     return (
         <div>
-            <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={label}>
+            <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={id(label)}>
                 {label}
             </label>
             <div
                 className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md h-10"}>
                 <input
                     type={"checkbox"}
-                    id={label}
+                    id={id(label)}
                     disabled={disabled}
                     checked={checked}
                     onChange={change}
                     className="
-          block
-          w-full
           p-2
           border border-gray-300
           rounded-md

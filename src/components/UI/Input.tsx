@@ -1,9 +1,10 @@
 import * as React from "react";
-import { type ChangeEvent, useState } from "react";
-import type { EventResponse } from "../interfaces/EventResponse.ts";
-import type { FormField } from "../interfaces/FormField.ts";
+import {type ChangeEvent, useState} from "react";
+import type {EventResponse} from "../interfaces/EventResponse.ts";
+import type {FormField} from "../interfaces/FormField.ts";
 import MoneyIcon from '@mui/icons-material/Money';
 import Percent from '@mui/icons-material/Percent';
+import id from "../../utils/id.ts";
 
 interface InputProps {
     label: string,
@@ -17,12 +18,6 @@ interface InputProps {
     disabled?: boolean,
     value: FormField<any>,
     onChange?: (value: any, name: any) => EventResponse,
-}
-
-const uuidv4 = () => {
-    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-        (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-    )
 }
 
 const Input: React.FC<InputProps> = ({
@@ -49,16 +44,13 @@ const Input: React.FC<InputProps> = ({
     }
 
 
-
-    const id = label.replaceAll(" ", "").trim().concat(uuidv4());
-
     return (
-        <div>
-            <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={id}>
+        <div >
+            <label className="font-bold text-yimin-blue whitespace-nowrap text-sm mb-1" htmlFor={id(label)}>
                 {label}
             </label>
             <div
-                className={"flex items-center justify-center border border-gray-300 bg-antiflash-white rounded-md h-10"}>
+                className={"flex items-center justify-center border  bg-antiflash-white rounded-md h-10"}>
                 {symbol && <span className={"flex justify-center w-12"}>{
                     inputType === 'range' ? value.value
                         : symbol === "%" ? <Percent fontSize={"small"} />
@@ -68,7 +60,7 @@ const Input: React.FC<InputProps> = ({
                     inputType === 'range' ?
                         <input
                             type={inputType}
-                            id={id}
+                            id={id(label)}
                             step={inputStep}
                             disabled={disabled}
                             value={value.value}
@@ -77,9 +69,7 @@ const Input: React.FC<InputProps> = ({
                             onChange={change}
                             className="
           block
-          w-full
-          p-2
-          border border-gray-300
+          flex-1
           rounded-md
           focus:outline-none
           focus:ring-2
@@ -91,7 +81,7 @@ const Input: React.FC<InputProps> = ({
                         />
                         : <input
                             type={inputType}
-                            id={id}
+                            id={id(label)}
                             placeholder={placeholder}
                             disabled={disabled}
                             value={value.value}
@@ -99,8 +89,8 @@ const Input: React.FC<InputProps> = ({
                             className="
           block
           w-full
-          md:w-36
           p-2
+          md:w-36
           border border-gray-300
           rounded-md
           focus:outline-none
