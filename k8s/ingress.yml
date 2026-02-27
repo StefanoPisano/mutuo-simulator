@@ -1,0 +1,17 @@
+# k8s/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mutuo-simulator-ingress
+spec:
+  rules:
+    - host: mutuo.localtest.me
+      http:
+        paths:
+          - path: /mutuo-simulator
+            pathType: Prefix
+            backend:
+              service:
+                name: mutuo-simulator-svc
+                port:
+                  number: 80
