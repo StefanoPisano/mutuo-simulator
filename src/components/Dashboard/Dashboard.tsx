@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
     type FormDataKeys = keyof FormDefinition;
     const defaultFormData: FormDefinition = {
         agencyRate: { isValid: true, value: 4, unit: "percentage" },
-        bankRate: { isValid: true, value: 3.20, unit: "percentage" },
+        bankRate: { isValid: true, value: 3.20, unit: "total" },
         monthlyRate: { isValid: true, value: 0, unit: "percentage" },
         numberOfInstallments: { isValid: true, value: 360, unit: "total" },
         mortgageDuration: { isValid: true, value: 30, unit: "duration" },
@@ -143,15 +143,15 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div
                             className="flex flex-col md:flex-row gap-4 basis-full md:basis-1/3 p-1.5 justify-center border rounded-xl border-gray-300 items-center md:items-stretch">
+                            <Input label={t("configuration.bankRate.label")}
+                                   placeholder={t("configuration.bankRate.placeholder")} symbol={"%"} inputType="text"
+                                   value={formData.bankRate}
+                                   disabled={false} name={"bankRate"} onChange={handleInputChange} />
+
                             <Input label={t("configuration.mortgage.label")}
                                 placeholder={t("configuration.mortgage.placeholder")} symbol={"%"} inputType="range"
                                 value={formData.mortgage} inputStep={1} min={0} max={100}
                                 disabled={false} name={"mortgage"} onChange={handleInputChange} />
-
-                            <Input label={t("configuration.bankRate.label")}
-                                placeholder={t("configuration.bankRate.placeholder")} symbol={"%"} inputType="range"
-                                value={formData.bankRate} inputStep={0.01} min={0} max={10}
-                                disabled={false} name={"bankRate"} onChange={handleInputChange} />
 
                             <Input label={t("configuration.mortgageDuration.label")}
                                 placeholder={t("configuration.mortgageDuration.placeholder")} symbol={"Y"}
